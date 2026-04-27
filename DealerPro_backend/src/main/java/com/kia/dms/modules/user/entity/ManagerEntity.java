@@ -1,0 +1,40 @@
+package com.kia.dms.modules.user.entity;
+
+import com.kia.dms.audit.BaseEntity;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Table(name = "managers")
+@Getter
+@Setter
+public class ManagerEntity extends BaseEntity {
+
+    @Column(name = "manager_unique_id", unique = true, nullable = false, length = 20)
+    private String managerUniqueId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
+    @Column(nullable = false, length = 100)
+    private String name;
+
+    @Column(unique = true, nullable = false, length = 100)
+    private String email;
+
+    @Column(length = 20)
+    private String phone;
+
+    public String getManagerUniqueId() { return managerUniqueId; }
+    public void setManagerUniqueId(String managerUniqueId) { this.managerUniqueId = managerUniqueId; }
+    public UserEntity getUser() { return user; }
+    public void setUser(UserEntity user) { this.user = user; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+}

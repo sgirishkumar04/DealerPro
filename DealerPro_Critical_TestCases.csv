@@ -1,0 +1,122 @@
+Test Case ID,Test Case Name,Module,Priority,Type,Description,Preconditions,Test Steps,Expected Result,Status
+CTC001,Login with valid Admin credentials,Authentication,Critical,Critical,Verify admin user can login with valid credentials,Admin account exists in database,"1. Navigate to login page
+2. Enter valid admin email
+3. Enter valid password
+4. Click Login button",User is authenticated successfully and redirected to admin dashboard with full access,Not Executed
+CTC002,Login with valid Manager credentials,Authentication,Critical,Critical,Verify manager user can login with valid credentials,Manager account exists in database,"1. Navigate to login page
+2. Enter valid manager email
+3. Enter valid password
+4. Click Login button",User is authenticated successfully and redirected to manager dashboard,Not Executed
+CTC003,Login with valid Dealer credentials,Authentication,Critical,Critical,Verify dealer user can login with valid credentials,Dealer account exists in database,"1. Navigate to login page
+2. Enter valid dealer email
+3. Enter valid password
+4. Click Login button",User is authenticated successfully and redirected to dealer dashboard,Not Executed
+CTC004,Login with invalid credentials,Authentication,Critical,Critical,Verify system rejects invalid login attempts,User account exists,"1. Navigate to login page
+2. Enter valid email
+3. Enter incorrect password
+4. Click Login button",System displays error message and login is denied,Not Executed
+CTC005,Account lockout after failed attempts,Authentication,Critical,Critical,Verify account locks after 5 failed login attempts,User account exists,"1. Attempt login with wrong password 5 times
+2. Try to login with correct password",Account is locked for 5 minutes and error message is displayed,Not Executed
+CTC006,JWT token generation on login,Authentication,Critical,Critical,Verify JWT token is generated and valid after successful login,User logged in successfully,"1. Login with valid credentials
+2. Check response headers/body for JWT token
+3. Verify token expiration is 30 minutes",Valid JWT token is generated with 30-minute expiration,Not Executed
+CTC007,Role-based access control - Admin,Authorization,Critical,Critical,Verify admin can access all system modules,Admin user logged in,"1. Navigate to user management
+2. Navigate to dealer management
+3. Navigate to analytics
+4. Navigate to audit logs",Admin has access to all modules without restrictions,Not Executed
+CTC008,Role-based access control - Manager,Authorization,Critical,Critical,Verify manager can access only authorized modules,Manager user logged in,"1. Attempt to access admin-only features
+2. Access dealer management
+3. Access analytics for assigned dealers",Manager can access authorized modules only and is denied admin features,Not Executed
+CTC009,Role-based access control - Dealer,Authorization,Critical,Critical,Verify dealer can access only their dealership data,Dealer user logged in,"1. Attempt to access other dealership data
+2. Access own dealership inventory
+3. Attempt to access admin features",Dealer can only view/modify their own dealership data,Not Executed
+CTC010,Create sales order with available vehicle,Sales,Critical,Critical,Verify sales order can be created with available vehicle,Dealer logged in and vehicle available,"1. Navigate to sales module
+2. Click Create Order
+3. Fill customer details
+4. Select available vehicle
+5. Enter payment details
+6. Submit order",Sales order is created successfully and vehicle status changes to Sold,Not Executed
+CTC011,Prevent sales order with unavailable vehicle,Sales,Critical,Critical,Verify system prevents order creation with sold/reserved vehicle,Dealer logged in and vehicle not available,"1. Navigate to sales module
+2. Attempt to create order with sold vehicle",System displays error and prevents order creation,Not Executed
+CTC012,Update vehicle inventory status,Inventory,Critical,Critical,Verify vehicle status updates correctly,Dealer logged in with vehicles in inventory,"1. Navigate to inventory
+2. Select a vehicle
+3. Change status from Available to Sold
+4. Save changes",Vehicle status is updated successfully in database,Not Executed
+CTC013,Create service appointment,Service,Critical,Critical,Verify service appointment can be scheduled,Dealer logged in,"1. Navigate to service module
+2. Click Schedule Appointment
+3. Select vehicle
+4. Choose date and time
+5. Select service type
+6. Submit",Service appointment is created successfully with scheduled status,Not Executed
+CTC014,Process payment transaction,Finance,Critical,Critical,Verify payment transaction is recorded correctly,Sales order exists,"1. Navigate to finance module
+2. Select pending order
+3. Enter payment amount
+4. Select payment method
+5. Process payment",Payment is recorded and order status updates to Completed,Not Executed
+CTC015,Create new dealer,Dealer Management,Critical,Critical,Verify admin can create new dealer,Admin logged in,"1. Navigate to dealer management
+2. Click Add Dealer
+3. Fill dealer details (name location contact)
+4. Assign manager
+5. Submit",New dealer is created successfully and appears in dealer list,Not Executed
+CTC016,Assign manager to dealer,Dealer Management,Critical,Critical,Verify manager can be assigned to dealership,Admin logged in and dealer exists,"1. Navigate to dealer management
+2. Select dealer
+3. Click Assign Manager
+4. Select manager from list
+5. Save",Manager is assigned successfully to dealer,Not Executed
+CTC017,Add vehicle to inventory,Inventory,Critical,Critical,Verify vehicle can be added to dealer inventory,Dealer logged in,"1. Navigate to inventory
+2. Click Add Vehicle
+3. Select KIA car model
+4. Enter vehicle details (color variant price)
+5. Submit",Vehicle is added successfully to dealer inventory,Not Executed
+CTC018,Create customer lead,Lead Management,Critical,Critical,Verify customer lead can be created,Dealer logged in,"1. Navigate to leads module
+2. Click Add Lead
+3. Enter customer details
+4. Select interested vehicle
+5. Enter lead source
+6. Submit",Lead is created successfully with New status,Not Executed
+CTC019,Convert lead to sales order,Lead Management,Critical,Critical,Verify lead can be converted to sales order,Dealer logged in and qualified lead exists,"1. Navigate to leads
+2. Select qualified lead
+3. Click Convert to Sale
+4. Fill order details
+5. Submit",Lead status changes to Converted and sales order is created,Not Executed
+CTC020,Schedule test drive,Test Drive,Critical,Critical,Verify test drive can be scheduled for lead,Dealer logged in and lead exists,"1. Navigate to leads
+2. Select lead
+3. Click Schedule Test Drive
+4. Select vehicle
+5. Choose date and time
+6. Submit",Test drive is scheduled successfully,Not Executed
+CTC021,Create parts purchase order,Parts Management,Critical,Critical,Verify parts purchase order can be created,Dealer logged in,"1. Navigate to parts module
+2. Click Create Purchase Order
+3. Select parts
+4. Enter quantities
+5. Enter supplier details
+6. Submit",Purchase order is created successfully,Not Executed
+CTC022,Update parts inventory,Parts Management,Critical,Critical,Verify parts inventory updates on receipt,Dealer logged in and purchase order exists,"1. Navigate to parts
+2. Select purchase order
+3. Mark as received
+4. Update quantities",Parts inventory is updated with received quantities,Not Executed
+CTC023,Generate sales report,Analytics,Critical,Critical,Verify sales report generates correctly,Manager logged in with sales data,"1. Navigate to analytics
+2. Select Sales Report
+3. Choose date range
+4. Select dealership
+5. Generate report",Sales report displays accurate data for selected period,Not Executed
+CTC024,View dealer performance metrics,Analytics,Critical,Critical,Verify dealer performance dashboard displays correctly,Manager logged in,"1. Navigate to analytics
+2. View dealer performance
+3. Check sales count revenue conversion rate",Dashboard displays accurate performance metrics for all dealers,Not Executed
+CTC025,Audit log creation on data modification,Audit,Critical,Critical,Verify audit log is created for all CRUD operations,User logged in,"1. Create/Update/Delete any entity
+2. Navigate to audit logs
+3. Search for recent action",Audit log entry is created with user timestamp action and entity details,Not Executed
+CTC026,Soft delete functionality,Data Management,Critical,Critical,Verify soft delete marks records as deleted without removal,Admin logged in,"1. Delete a dealer/vehicle/order
+2. Check database
+3. Verify record still exists with is_deleted=true",Record is marked as deleted but not physically removed from database,Not Executed
+CTC027,Session timeout after inactivity,Security,Critical,Critical,Verify user session expires after 30 minutes of inactivity,User logged in,"1. Login successfully
+2. Wait 30 minutes without activity
+3. Attempt to perform action",Session expires and user is redirected to login page,Not Executed
+CTC028,Password encryption in database,Security,Critical,Critical,Verify passwords are stored encrypted using BCrypt,Admin access to database,"1. Create new user
+2. Check database users table
+3. Verify password field",Password is stored as BCrypt hash not plain text,Not Executed
+CTC029,Prevent SQL injection,Security,Critical,Critical,Verify system is protected against SQL injection attacks,User at login page,"1. Enter SQL injection code in email field
+2. Submit login form",System sanitizes input and prevents SQL injection,Not Executed
+CTC030,API endpoint authentication,Security,Critical,Critical,Verify all API endpoints require valid JWT token,User with/without token,"1. Call protected API endpoint without token
+2. Call with invalid token
+3. Call with valid token",Endpoints reject requests without valid token and accept with valid token,Not Executed

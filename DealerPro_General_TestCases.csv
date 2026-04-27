@@ -1,0 +1,258 @@
+Test Case ID,Test Case Name,Module,Priority,Type,Description,Preconditions,Test Steps,Expected Result,Status
+SMK001,Application launch,System,High,Smoke,Verify application launches successfully,Application deployed,"1. Start application server
+2. Check application logs
+3. Access application URL",Application starts without errors and homepage loads,Not Executed
+SMK002,Database connectivity,System,High,Smoke,Verify database connection is established,Database server running,"1. Start application
+2. Check database connection logs
+3. Perform simple query",Database connection is successful,Not Executed
+SMK003,Login page loads,Authentication,High,Smoke,Verify login page renders correctly,Application running,"1. Navigate to application URL
+2. Check page elements",Login page loads with email password fields and login button,Not Executed
+SMK004,Basic user login,Authentication,High,Smoke,Verify user can login,User account exists,"1. Enter valid credentials
+2. Click login",User logs in successfully,Not Executed
+SMK005,Dashboard loads after login,Dashboard,High,Smoke,Verify dashboard renders after login,User logged in,"1. Complete login
+2. Wait for dashboard",Dashboard loads with navigation and widgets,Not Executed
+SMK006,Navigation menu accessible,Navigation,High,Smoke,Verify all navigation menu items are accessible,User logged in,"1. Check navigation menu
+2. Click each menu item",All menu items are visible and clickable,Not Executed
+SMK007,Logout functionality,Authentication,High,Smoke,Verify user can logout,User logged in,"1. Click logout button
+2. Verify redirect",User is logged out and redirected to login page,Not Executed
+SMK008,Create basic record,Data Entry,High,Smoke,Verify basic create operation works,User logged in,"1. Navigate to any module
+2. Create new record
+3. Save",Record is created successfully,Not Executed
+SMK009,View records list,Data Display,High,Smoke,Verify records list displays,User logged in with data,"1. Navigate to any module
+2. View list",Records are displayed in list format,Not Executed
+SMK010,Search functionality,Search,High,Smoke,Verify basic search works,User logged in with data,"1. Enter search term
+2. Click search",Relevant results are displayed,Not Executed
+REG001,User login after password change,Authentication,High,Regression,Verify login works after password update,User account exists,"1. Change user password
+2. Logout
+3. Login with new password",Login successful with new password,Not Executed
+REG002,Role permissions after user update,Authorization,High,Regression,Verify role permissions remain intact after user update,User with specific role,"1. Update user details (name email)
+2. Verify role permissions",Role permissions are unchanged after update,Not Executed
+REG003,Existing orders after vehicle update,Sales,High,Regression,Verify existing orders are not affected by vehicle updates,Completed orders exist,"1. Update vehicle details
+2. Check existing orders",Existing orders retain original vehicle information,Not Executed
+REG004,Inventory count after order cancellation,Inventory,High,Regression,Verify inventory updates correctly when order is cancelled,Order exists with vehicle,"1. Cancel sales order
+2. Check vehicle status",Vehicle status returns to Available,Not Executed
+REG005,Service history after vehicle transfer,Service,High,Regression,Verify service history is maintained after vehicle transfer,Vehicle with service history,"1. Transfer vehicle to another dealer
+2. Check service history",Service history is preserved after transfer,Not Executed
+REG006,Lead data after dealer reassignment,Lead Management,High,Regression,Verify leads remain accessible after dealer reassignment,Leads assigned to dealer,"1. Reassign dealer to different manager
+2. Check lead accessibility",Leads remain accessible to dealer,Not Executed
+REG007,Financial reports after transaction update,Finance,High,Regression,Verify reports update correctly after transaction modification,Transactions exist,"1. Update transaction details
+2. Regenerate financial report",Report reflects updated transaction data,Not Executed
+REG008,Analytics after data deletion,Analytics,High,Regression,Verify analytics exclude soft-deleted records,Records with some deleted,"1. Soft delete records
+2. View analytics dashboard",Analytics exclude deleted records from calculations,Not Executed
+REG009,Audit logs after system update,Audit,High,Regression,Verify audit logging continues after system update,System updated,"1. Perform CRUD operations
+2. Check audit logs",Audit logs are created correctly after update,Not Executed
+REG010,Search results after data modification,Search,High,Regression,Verify search returns updated results after data changes,Searchable data exists,"1. Modify record data
+2. Search for record
+3. Verify results",Search returns updated information,Not Executed
+REG011,Pagination after record deletion,Data Display,Medium,Regression,Verify pagination adjusts after records are deleted,Multiple pages of data,"1. Delete records
+2. Navigate through pages",Pagination updates correctly with accurate page counts,Not Executed
+REG012,Filters after new data addition,Filtering,Medium,Regression,Verify filters include newly added data,Filter criteria set,"1. Add new records
+2. Apply filters",New records appear in filtered results when criteria match,Not Executed
+REG013,Sorting after data update,Sorting,Medium,Regression,Verify sorting works correctly after data updates,Sortable data exists,"1. Update record values
+2. Apply sorting",Records are sorted correctly with updated values,Not Executed
+REG014,Export functionality after data changes,Export,Medium,Regression,Verify export includes latest data changes,Data modified,"1. Modify records
+2. Export data to CSV/PDF",Exported file contains updated data,Not Executed
+REG015,Email notifications after configuration change,Notifications,Medium,Regression,Verify notifications continue working after config changes,Notification system configured,"1. Update notification settings
+2. Trigger notification event",Notifications are sent correctly with new configuration,Not Executed
+POS001,Create user with all valid fields,User Management,Medium,Positive,Verify user creation with all valid inputs,Admin logged in,"1. Navigate to user management
+2. Fill all fields with valid data
+3. Submit",User is created successfully with all details saved,Not Executed
+POS002,Update user profile information,User Management,Medium,Positive,Verify user can update their profile,User logged in,"1. Navigate to profile
+2. Update name email phone
+3. Save changes",Profile is updated successfully,Not Executed
+POS003,View user list with pagination,User Management,Medium,Positive,Verify user list displays with pagination,Admin logged in with multiple users,"1. Navigate to user management
+2. View user list
+3. Navigate pages",Users are displayed in paginated format,Not Executed
+POS004,Search users by email,User Management,Medium,Positive,Verify user search by email works,Admin logged in with users,"1. Enter email in search
+2. Click search",Matching users are displayed,Not Executed
+POS005,Filter users by role,User Management,Medium,Positive,Verify users can be filtered by role,Admin logged in,"1. Select role filter
+2. Apply filter",Only users with selected role are displayed,Not Executed
+POS006,Create dealer with complete information,Dealer Management,Medium,Positive,Verify dealer creation with all details,Admin logged in,"1. Navigate to dealers
+2. Fill all dealer fields
+3. Submit",Dealer is created with all information saved,Not Executed
+POS007,Update dealer contact information,Dealer Management,Medium,Positive,Verify dealer contact details can be updated,Dealer exists,"1. Select dealer
+2. Update contact details
+3. Save",Contact information is updated successfully,Not Executed
+POS008,View dealer performance dashboard,Dealer Management,Medium,Positive,Verify dealer performance metrics display,Manager logged in,"1. Navigate to dealer performance
+2. Select dealer
+3. View metrics",Performance metrics display correctly,Not Executed
+POS009,Search dealers by location,Dealer Management,Medium,Positive,Verify dealer search by location,Multiple dealers exist,"1. Enter location in search
+2. Search",Dealers in specified location are displayed,Not Executed
+POS010,Filter dealers by status,Dealer Management,Medium,Positive,Verify dealers can be filtered by status,Dealers with different statuses,"1. Select status filter
+2. Apply",Only dealers with selected status are shown,Not Executed
+POS011,Add vehicle with all specifications,Inventory,Medium,Positive,Verify vehicle addition with complete details,Dealer logged in,"1. Navigate to inventory
+2. Fill all vehicle fields
+3. Submit",Vehicle is added with all specifications,Not Executed
+POS012,Update vehicle pricing,Inventory,Medium,Positive,Verify vehicle price can be updated,Vehicle exists in inventory,"1. Select vehicle
+2. Update price
+3. Save",Vehicle price is updated successfully,Not Executed
+POS013,View inventory by model,Inventory,Medium,Positive,Verify inventory can be filtered by model,Multiple vehicles in inventory,"1. Select model filter
+2. Apply filter",Only vehicles of selected model are displayed,Not Executed
+POS014,Search vehicles by color,Inventory,Medium,Positive,Verify vehicle search by color,Vehicles with different colors,"1. Enter color in search
+2. Search",Vehicles with matching color are displayed,Not Executed
+POS015,View vehicle details,Inventory,Medium,Positive,Verify complete vehicle details can be viewed,Vehicle exists,"1. Select vehicle
+2. View details",All vehicle specifications are displayed,Not Executed
+POS016,Create sales order with customer details,Sales,Medium,Positive,Verify order creation with complete customer info,Dealer logged in,"1. Navigate to sales
+2. Fill customer details
+3. Select vehicle
+4. Submit",Order is created with all customer information,Not Executed
+POS017,Update order status,Sales,Medium,Positive,Verify order status can be updated,Order exists,"1. Select order
+2. Change status
+3. Save",Order status is updated successfully,Not Executed
+POS018,View order history,Sales,Medium,Positive,Verify order history displays correctly,Multiple orders exist,"1. Navigate to orders
+2. View order list
+3. Check details",All orders are displayed with complete information,Not Executed
+POS019,Search orders by customer name,Sales,Medium,Positive,Verify order search by customer name,Orders exist,"1. Enter customer name
+2. Search",Orders for matching customer are displayed,Not Executed
+POS020,Filter orders by status,Sales,Medium,Positive,Verify orders can be filtered by status,Orders with different statuses,"1. Select status filter
+2. Apply",Only orders with selected status are shown,Not Executed
+POS021,Schedule service with all details,Service,Medium,Positive,Verify service appointment with complete information,Dealer logged in,"1. Navigate to service
+2. Fill all appointment fields
+3. Submit",Service appointment is scheduled with all details,Not Executed
+POS022,Update service status,Service,Medium,Positive,Verify service status can be updated,Service appointment exists,"1. Select appointment
+2. Update status
+3. Save",Service status is updated successfully,Not Executed
+POS023,View service history for vehicle,Service,Medium,Positive,Verify service history displays for vehicle,Vehicle with service records,"1. Select vehicle
+2. View service history",All service records for vehicle are displayed,Not Executed
+POS024,Search service appointments by date,Service,Medium,Positive,Verify service search by date,Multiple appointments exist,"1. Select date range
+2. Search",Appointments in date range are displayed,Not Executed
+POS025,Add service cost,Service,Medium,Positive,Verify service cost can be recorded,Service appointment exists,"1. Select appointment
+2. Enter cost details
+3. Save",Service cost is recorded successfully,Not Executed
+POS026,Create lead with source information,Lead Management,Medium,Positive,Verify lead creation with source tracking,Dealer logged in,"1. Navigate to leads
+2. Fill lead details
+3. Select source
+4. Submit",Lead is created with source information,Not Executed
+POS027,Update lead status,Lead Management,Medium,Positive,Verify lead status can be updated,Lead exists,"1. Select lead
+2. Change status
+3. Add notes
+4. Save",Lead status is updated with notes,Not Executed
+POS028,View lead conversion rate,Lead Management,Medium,Positive,Verify lead conversion metrics display,Leads with different statuses,"1. Navigate to lead analytics
+2. View conversion rate",Conversion rate is calculated and displayed correctly,Not Executed
+POS029,Search leads by phone number,Lead Management,Medium,Positive,Verify lead search by phone,Leads exist,"1. Enter phone number
+2. Search",Matching leads are displayed,Not Executed
+POS030,Filter leads by status,Lead Management,Medium,Positive,Verify leads can be filtered by status,Leads with different statuses,"1. Select status filter
+2. Apply",Only leads with selected status are shown,Not Executed
+CORE001,User authentication flow,Authentication,High,Core Functionality,Verify complete authentication process,Application running,"1. Access login page
+2. Enter credentials
+3. Submit
+4. Verify token generation
+5. Access protected resource",Complete authentication flow works end-to-end,Not Executed
+CORE002,User authorization flow,Authorization,High,Core Functionality,Verify role-based access control,Users with different roles,"1. Login as each role
+2. Attempt to access various modules
+3. Verify permissions",Each role has appropriate access levels,Not Executed
+CORE003,Complete sales order workflow,Sales,High,Core Functionality,Verify end-to-end sales process,Dealer logged in with inventory,"1. Create lead
+2. Schedule test drive
+3. Convert to order
+4. Process payment
+5. Complete order",Complete sales workflow executes successfully,Not Executed
+CORE004,Inventory management workflow,Inventory,High,Core Functionality,Verify complete inventory operations,Dealer logged in,"1. Add vehicle
+2. Update details
+3. Change status
+4. View inventory
+5. Search and filter",All inventory operations work correctly,Not Executed
+CORE005,Service management workflow,Service,High,Core Functionality,Verify complete service process,Dealer logged in,"1. Schedule appointment
+2. Update to In Progress
+3. Add service details
+4. Record cost
+5. Complete service",Complete service workflow executes successfully,Not Executed
+CORE006,Lead to sale conversion workflow,Lead Management,High,Core Functionality,Verify lead conversion process,Dealer logged in,"1. Create lead
+2. Contact customer
+3. Qualify lead
+4. Schedule test drive
+5. Convert to sale",Lead successfully converts to completed sale,Not Executed
+CORE007,Financial transaction workflow,Finance,High,Core Functionality,Verify complete payment process,Order exists,"1. Record payment
+2. Update order status
+3. Generate invoice
+4. View transaction history",Complete financial workflow executes successfully,Not Executed
+CORE008,Parts inventory workflow,Parts Management,High,Core Functionality,Verify parts management process,Dealer logged in,"1. Create purchase order
+2. Receive parts
+3. Update inventory
+4. Use in service
+5. Track stock levels",Complete parts workflow executes successfully,Not Executed
+CORE009,Reporting and analytics workflow,Analytics,High,Core Functionality,Verify report generation process,Manager logged in with data,"1. Select report type
+2. Set parameters
+3. Generate report
+4. View results
+5. Export report",Reports generate with accurate data,Not Executed
+CORE010,Audit logging workflow,Audit,High,Core Functionality,Verify audit trail creation,User performing operations,"1. Create record
+2. Update record
+3. Delete record
+4. View audit logs
+5. Filter logs",All operations are logged with complete details,Not Executed
+CORE011,Multi-dealer management,Dealer Management,High,Core Functionality,Verify manager can oversee multiple dealers,Manager logged in,"1. View all assigned dealers
+2. Switch between dealers
+3. View consolidated reports
+4. Manage dealer users",Manager can effectively manage multiple dealerships,Not Executed
+CORE012,Data export functionality,Data Export,Medium,Core Functionality,Verify data can be exported in multiple formats,User logged in with data,"1. Select data to export
+2. Choose format (CSV/PDF)
+3. Export
+4. Verify file content",Data exports correctly in selected format,Not Executed
+CORE013,Search and filter operations,Search,Medium,Core Functionality,Verify advanced search and filtering,User logged in with data,"1. Apply multiple filters
+2. Perform search
+3. Sort results
+4. Paginate through results",Search and filter work correctly together,Not Executed
+CORE014,Notification system,Notifications,Medium,Core Functionality,Verify system notifications work,User logged in,"1. Trigger notification event
+2. Check notification display
+3. Mark as read
+4. Clear notifications",Notifications are displayed and managed correctly,Not Executed
+CORE015,Data validation across modules,Validation,Medium,Core Functionality,Verify input validation works consistently,User logged in,"1. Enter invalid data in various forms
+2. Submit
+3. Verify error messages",Validation works consistently across all modules,Not Executed
+CORE016,Concurrent user operations,Concurrency,Medium,Core Functionality,Verify system handles multiple users,Multiple users logged in,"1. Multiple users access same data
+2. Perform operations simultaneously
+3. Verify data integrity",System handles concurrent operations without data corruption,Not Executed
+CORE017,Session management,Session,Medium,Core Functionality,Verify session handling works correctly,User logged in,"1. Perform operations
+2. Check session timeout
+3. Verify session refresh
+4. Test logout",Session is managed correctly throughout user activity,Not Executed
+CORE018,Error handling and recovery,Error Handling,Medium,Core Functionality,Verify system handles errors gracefully,User logged in,"1. Trigger various error conditions
+2. Verify error messages
+3. Verify system recovery",System displays appropriate errors and recovers gracefully,Not Executed
+CORE019,Data pagination performance,Performance,Medium,Core Functionality,Verify pagination works efficiently with large datasets,Large dataset exists,"1. Navigate to list with many records
+2. Navigate through pages
+3. Change page size
+4. Verify load time",Pagination performs efficiently with large data,Not Executed
+CORE020,Cache functionality,Caching,Medium,Core Functionality,Verify caching improves performance,Application with Redis cache,"1. Access frequently used data
+2. Verify cache hit
+3. Update data
+4. Verify cache invalidation",Caching works correctly and improves performance,Not Executed
+CORE021,Database transaction management,Database,Medium,Core Functionality,Verify database transactions maintain data integrity,User performing operations,"1. Start transaction
+2. Perform multiple operations
+3. Verify commit on success
+4. Verify rollback on failure",Database transactions maintain data integrity,Not Executed
+CORE022,API response format,API,Medium,Core Functionality,Verify API responses follow standard format,API client,"1. Call various API endpoints
+2. Verify response structure
+3. Check status codes
+4. Verify error format",All API responses follow consistent format,Not Executed
+CORE023,File upload functionality,File Upload,Medium,Core Functionality,Verify files can be uploaded successfully,User logged in,"1. Select file
+2. Upload
+3. Verify file storage
+4. Verify file retrieval",Files upload and retrieve correctly,Not Executed
+CORE024,Bulk operations,Bulk Operations,Medium,Core Functionality,Verify bulk operations work correctly,User logged in with multiple records,"1. Select multiple records
+2. Perform bulk action
+3. Verify all records updated",Bulk operations execute successfully on all selected records,Not Executed
+CORE025,Data backup and restore,Backup,Low,Core Functionality,Verify data backup and restore functionality,Admin access,"1. Trigger backup
+2. Verify backup file
+3. Restore from backup
+4. Verify data integrity",Data backs up and restores correctly,Not Executed
+CORE026,System configuration management,Configuration,Low,Core Functionality,Verify system configurations can be managed,Admin logged in,"1. View current config
+2. Update settings
+3. Save changes
+4. Verify changes applied",Configuration changes apply correctly without restart,Not Executed
+CORE027,Scheduled job execution,Scheduler,Low,Core Functionality,Verify scheduled jobs run correctly,Scheduled jobs configured,"1. Wait for scheduled time
+2. Verify job execution
+3. Check job logs
+4. Verify results",Scheduled jobs execute at correct times with expected results,Not Executed
+CORE028,Database connection pooling,Database,Low,Core Functionality,Verify connection pooling works efficiently,Application running with load,"1. Monitor connection pool
+2. Perform multiple operations
+3. Verify connection reuse
+4. Check pool metrics",Connection pooling manages connections efficiently,Not Executed
+CORE029,Logging functionality,Logging,Low,Core Functionality,Verify application logging works correctly,Application running,"1. Perform various operations
+2. Check application logs
+3. Verify log levels
+4. Verify log rotation",Logging captures appropriate information at correct levels,Not Executed
+CORE030,Health check endpoint,Monitoring,Low,Core Functionality,Verify health check endpoint reports system status,Application running,"1. Call health check endpoint
+2. Verify response
+3. Check component status
+4. Verify uptime",Health check accurately reports system status,Not Executed
