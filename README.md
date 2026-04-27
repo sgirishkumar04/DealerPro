@@ -8,20 +8,16 @@ Before you begin, ensure you have the following installed on your machine:
 
 1.  **Java 17+** (For the Spring Boot backend)
 2.  **Node.js (v18+) & npm** (For the React frontend)
-3.  **MySQL Server** (Running locally on default port 3306)
-4.  **Maven** (Optional, the project includes the Maven wrapper `mvnw`)
+3.  **Maven** (Optional, the project includes the Maven wrapper `mvnw`)
+*(Note: No separate database server is required as the project uses a self-contained SQLite database!)*
 
 ---
 
 ## 🛠️ Backend Setup (Spring Boot)
 
 1.  **Database Setup:**
-    *   Open your MySQL server.
-    *   Create a database named `hyundai_dms` (or `dealerpro` depending on your `application.properties`):
-        ```sql
-        CREATE DATABASE IF NOT EXISTS hyundai_dms;
-        ```
-    *   *Note:* Check `DealerPro_backend/src/main/resources/application.properties` for the exact database name, username, and password. Update the credentials if your local MySQL uses a different username/password (default is often `root` / `password` or empty).
+    *   You don't need to do anything! The project uses a pre-configured **SQLite** database.
+    *   The database file is already included in the repository at `db/DealerPro.db`. All your current data has been saved and will work immediately on the new laptop.
 
 2.  **Start the Backend:**
     *   Navigate to the backend directory:
@@ -71,5 +67,5 @@ If the application comes with a seed script or default users, use these to log i
 ## ⚙️ Troubleshooting
 
 *   **Port Conflicts:** If ports `8083` or `3001` are in use, find the process and kill it (e.g., `lsof -ti:8083 | xargs kill -9`).
-*   **Database connection refused:** Ensure MySQL service is running and the credentials in `application.properties` are correct.
+*   **Database issues:** If you face database locked errors, ensure no other application is opening the `DealerPro.db` file.
 *   **NPM issues:** Try removing `node_modules` and `package-lock.json` and running `npm install` again if you face dependency errors on the new laptop.
