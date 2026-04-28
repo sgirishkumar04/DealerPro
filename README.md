@@ -1,6 +1,8 @@
 # DealerPro (DMS)
 
-A comprehensive Dealer Management System (DMS) built with Spring Boot (Backend) and React/Vite (Frontend).
+A comprehensive Dealer Management System (DMS) built with Spring Boot (Backend) and React/Vite (Frontend). 
+
+**Phase 2 Update**: The backend has been refactored into a **Maven Multi-Module Architecture** for better scalability, security, and separation of concerns.
 
 ## Prerequisites
 
@@ -9,34 +11,51 @@ Before you begin, ensure you have the following installed on your machine:
 1.  **Java 17+** (For the Spring Boot backend)
 2.  **Node.js (v18+) & npm** (For the React frontend)
 3.  **Maven** (Optional, the project includes the Maven wrapper `mvnw`)
-*(Note: No separate database server is required as the project uses a self-contained SQLite database!)*
+*(Note: The project defaults to a self-contained SQLite database!)*
+
+---
+
+## 🏗️ Backend Architecture (Multi-Module)
+
+The backend is physically separated into three architectural layers:
+- **`DealerPro_core`**: Entities, Repositories, and Database drivers.
+- **`DealerPro_service`**: Business Logic, DTOs, and Scheduling.
+- **`DealerPro_api`**: Controllers, Security Filters, and Main Application.
 
 ---
 
 ## 🛠️ Backend Setup (Spring Boot)
 
 1.  **Database Setup:**
-    *   You don't need to do anything! The project uses a pre-configured **SQLite** database.
-    *   The database file is already included in the repository at `db/DealerPro.db`. All your current data has been saved and will work immediately on the new laptop.
+    *   The project uses a pre-configured **SQLite** database by default.
+    *   The database file is located at `db/DealerPro.db`. The system is configured to find it relatively from the API module.
 
-2.  **Start the Backend:**
+2.  **Build and Install Modules:**
     *   Navigate to the backend directory:
         ```bash
         cd DealerPro_backend
         ```
-    *   Run the application using the Maven wrapper:
+    *   Build the entire reactor (all modules):
         ```bash
-        ./mvnw spring-boot:run
+        ./mvnw clean install
+        ```
+
+3.  **Start the Backend:**
+    *   Navigate to the executable API module:
+        ```bash
+        cd DealerPro_api
+        ```
+    *   Run the application:
+        ```bash
+        mvn spring-boot:run
         ```
     *   The backend will start on **http://localhost:8083**.
-    *   *(Hibernate will automatically create/update the database tables based on the entities).*
 
 ---
 
 ## 💻 Frontend Setup (React + Vite)
 
 1.  **Install Dependencies:**
-    *   Open a new terminal window.
     *   Navigate to the frontend directory:
         ```bash
         cd DealerPro_frontend
@@ -51,21 +70,19 @@ Before you begin, ensure you have the following installed on your machine:
         ```bash
         npm run dev
         ```
-    *   The frontend will be available at **http://localhost:3001** (or 5173 depending on your Vite config).
+    *   The frontend will be available at **http://localhost:3001**.
 
 ---
 
 ## 🔑 Default Credentials
 
-If the application comes with a seed script or default users, use these to log in (check your database `employees` table if unsure):
-
-*   **Admin/Manager Login:** `admin@kia.com` (or similar, check DB)
-*   **Password:** `password123` (or whatever is hashed in the database)
+*   **Admin/Manager Login:** `admin@kia.com`
+*   **Password:** `password123`
 
 ---
 
 ## ⚙️ Troubleshooting
 
-*   **Port Conflicts:** If ports `8083` or `3001` are in use, find the process and kill it (e.g., `lsof -ti:8083 | xargs kill -9`).
-*   **Database issues:** If you face database locked errors, ensure no other application is opening the `DealerPro.db` file.
-*   **NPM issues:** Try removing `node_modules` and `package-lock.json` and running `npm install` again if you face dependency errors on the new laptop.
+*   **Database Path Issues**: Since this is a multi-module project, ensure the database path in `application.properties` is set to `../../db/DealerPro.db` so it can be found from the `DealerPro_api` execution context.
+*   **Port Conflicts**: If ports `8083` or `3001` are in use, kill the process: `lsof -ti:8083 | xargs kill -9`.
+*   **Maven Errors**: If you get "Module not found" errors, ensure you run `./mvnw clean install` from the **root** of `DealerPro_backend` before running the API module.
