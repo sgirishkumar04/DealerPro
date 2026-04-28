@@ -248,6 +248,10 @@ public class DataSeeder implements CommandLineRunner {
         // ─── 6. Leads (50+ associate with Manager via Dealer) ───────────────
         if (leadRepository.count() < 50) {
             dealers = dealerRepository.findAll();
+            if (dealers.isEmpty()) {
+                log.warn("No dealers found, skipping lead seeding.");
+                return;
+            }
             String[] leadStatuses = {"NEW","CONTACTED","QUALIFIED","NEGOTIATION","CONVERTED","LOST"};
             for (int i = (int)leadRepository.count(); i < 60; i++) {
                 LeadEntity lead = new LeadEntity();

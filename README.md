@@ -26,30 +26,44 @@ The backend is physically separated into three architectural layers:
 
 ## 🛠️ Backend Setup (Spring Boot)
 
-1.  **Database Setup:**
-    *   The project uses a pre-configured **SQLite** database by default.
-    *   The database file is located at `db/DealerPro.db`. The system is configured to find it relatively from the API module.
+### 1. Choice of Database (Profiles)
+The project supports two environment profiles:
+- **`sqlite` (Default)**: Best for local development. Uses a local file in `db/DealerPro.db`.
+- **`mysql`**: Production-grade environment. Requires a local MySQL server.
 
-2.  **Build and Install Modules:**
-    *   Navigate to the backend directory:
-        ```bash
-        cd DealerPro_backend
-        ```
-    *   Build the entire reactor (all modules):
-        ```bash
-        ./mvnw clean install
-        ```
+### 2. MySQL Environment Setup (Optional)
+If you wish to use the **MySQL** profile:
+1.  Ensure MySQL is installed and running on your machine.
+2.  Create the database manually:
+    ```sql
+    CREATE DATABASE DealerPro;
+    ```
+3.  Configure your credentials in `DealerPro_api/src/main/resources/application-mysql.properties`:
+    ```properties
+    spring.datasource.username=root
+    spring.datasource.password=YOUR_PASSWORD
+    ```
 
-3.  **Start the Backend:**
-    *   Navigate to the executable API module:
+### 3. Build and Start the Application
+1.  Navigate to the backend directory:
+    ```bash
+    cd DealerPro_backend
+    ```
+2.  Build the entire reactor:
+    ```bash
+    ./mvnw clean install
+    ```
+3.  Run with your preferred profile:
+    *   **For SQLite (Default)**:
         ```bash
         cd DealerPro_api
-        ```
-    *   Run the application:
-        ```bash
         mvn spring-boot:run
         ```
-    *   The backend will start on **http://localhost:8083**.
+    *   **For MySQL**:
+        ```bash
+        cd DealerPro_api
+        mvn spring-boot:run -Dspring-boot.run.profiles=mysql
+        ```
 
 ---
 
