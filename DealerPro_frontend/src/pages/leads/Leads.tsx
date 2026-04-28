@@ -535,7 +535,9 @@ export default function Leads() {
         });
       }
       
-      return editId ? api.put(`/api/leads/${editId}`, formData) : api.post('/api/leads', formData);
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
+      
+      return editId ? api.put(`/api/leads/${editId}`, formData, config) : api.post('/api/leads', formData, config);
     },
     onSuccess: () => {
       toast.success(editId ? 'Lead updated successfully' : 'Lead added successfully');
@@ -556,17 +558,34 @@ export default function Leads() {
       setEditId(item.id);
       setCurrentVersion(item.version);
       if (isManagerOrAdmin && item.dealerId) {
-        setValue('dealerId', item.dealerId);
+        // Ensure dealerId is set as a number for the Select component
+        setValue('dealerId', Number(item.dealerId));
       }
       setValue('firstName', item.firstName);
       setValue('lastName', item.lastName);
       setValue('email', item.email);
       setValue('phone', item.phone);
-      setValue('modelName', item.modelName || '');
-      setValue('variant', item.variant || '');
-      setValue('color', item.color || '');
+      let parsedModel = item.modelName;
+      let parsedVariant = item.variant;
+      let parsedColor = item.color;
+      
+      if (!parsedModel && item.vehicleInterest) {
+        const parts = item.vehicleInterest.split(' - ');
+        parsedModel = parts[0] || '';
+        parsedVariant = parts[1] || '';
+        parsedColor = parts[2] || '';
+      }
+
+      setValue('modelName', parsedModel || '');
+      setValue('variant', parsedVariant || '');
+      setValue('color', parsedColor || '');
       setValue('status', item.status || 'NEW');
       setValue('notes', item.notes || '');
+      
+      // Update states for cascading dropdowns to pre-populate Autocomplete components
+      setSelectedModel(parsedModel || null);
+      setSelectedVariant(parsedVariant || null);
+      setSelectedColor(parsedColor || null);
     } else {
       setEditId(null);
       setCurrentVersion(null);
@@ -926,7 +945,7 @@ export default function Leads() {
                   <Select
                     {...register('dealerId', { valueAsNumber: true })}
                     label="Dealer"
-                    defaultValue=""
+                    value={watch('dealerId') || ''}
                     sx={{ borderRadius: 0 }}
                   >
                     {dealers.map((dealer: any) => (
