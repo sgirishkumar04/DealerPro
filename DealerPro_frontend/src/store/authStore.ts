@@ -44,7 +44,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     localStorage.setItem('auth_user', JSON.stringify(user));
     set({ user, isAuthenticated: true });
   },
-  logout: () => {
+  logout: async () => {
+    const stored = localStorage.getItem('auth_user');
+    if (stored) {
+      try {
+        const user = JSON.parse(stored);
+        await fetch('http://localhost:8083/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${user.token}`
+          }
+        });
+      } catch (e) {
+        console.error('Logout API call failed', e);
+      }
+    }
     localStorage.removeItem('auth_user');
     set({ user: null, isAuthenticated: false });
   },

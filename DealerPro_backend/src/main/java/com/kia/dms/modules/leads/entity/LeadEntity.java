@@ -15,9 +15,11 @@ public class LeadEntity extends BaseEntity {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
+    @Convert(converter = EncryptionConverter.class)
     @Column(length = 100)
     private String email;
 
+    @Convert(converter = EncryptionConverter.class)
     @Column(length = 20)
     private String phone;
 

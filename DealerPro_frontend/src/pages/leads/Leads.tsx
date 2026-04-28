@@ -29,7 +29,8 @@ const formSchema = z.object({
   modelName: z.string().min(1, 'Model is required'),
   variant: z.string().min(1, 'Variant is required'),
   color: z.string().min(1, 'Color is required'),
-  status: z.string().min(1, 'Status is required')
+  status: z.string().min(1, 'Status is required'),
+  notes: z.string().optional()
 });
 
 // ─── Toolbar Filter/Sort Types ────────────────────────────────────────────────
@@ -426,6 +427,7 @@ export default function Leads() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [toolbarOpen, setToolbarOpen] = useState(false);
   const [openConflictDialog, setOpenConflictDialog] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   // Toolbar state
   const [docDialogId, setDocDialogId] = useState<number | null>(null);
@@ -513,14 +515,27 @@ export default function Leads() {
   const mutation = useMutation({
     mutationFn: (newData: any) => {
       // Map frontend fields to LeadEntity fields
-      const { modelName, variant, color, ...rest } = newData;
+      const { modelName, variant, color, dealerId, ...rest } = newData;
       const vehicleInterest = [modelName, variant, color].filter(Boolean).join(' - ');
-      const payload = {
+      const payload: any = {
         ...rest,
         vehicleInterest: vehicleInterest || undefined,
         version: currentVersion
       };
-      return editId ? api.put(`/api/leads/${editId}`, payload) : api.post('/api/leads', payload);
+      
+      if (dealerId) {
+        payload.dealer = { id: dealerId };
+      }
+      
+      const formData = new FormData();
+      formData.append('lead', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+      if (selectedFiles.length > 0) {
+        selectedFiles.forEach(file => {
+          formData.append('files', file);
+        });
+      }
+      
+      return editId ? api.put(`/api/leads/${editId}`, formData) : api.post('/api/leads', formData);
     },
     onSuccess: () => {
       toast.success(editId ? 'Lead updated successfully' : 'Lead added successfully');
@@ -551,9 +566,11 @@ export default function Leads() {
       setValue('variant', item.variant || '');
       setValue('color', item.color || '');
       setValue('status', item.status || 'NEW');
+      setValue('notes', item.notes || '');
     } else {
       setEditId(null);
       setCurrentVersion(null);
+      setSelectedFiles([]);
       reset({
         firstName: '',
         lastName: '',
@@ -562,10 +579,10 @@ export default function Leads() {
         modelName: '',
         variant: '',
         color: '',
-        status: 'NEW'
+        status: 'NEW',
+        notes: ''
       });
     }
-    setActiveTab(tab);
     setIsFormOpen(true);
   };
 
@@ -581,6 +598,7 @@ export default function Leads() {
     setSelectedModel(null);
     setSelectedVariant(null);
     setSelectedColor(null);
+    setSelectedFiles([]);
     reset();
   };
 
@@ -1024,6 +1042,42 @@ export default function Leads() {
                   </Typography>
                 )}
               </FormControl>
+
+              <TextField 
+                {...register('notes')} 
+                label="Lead Notes (Encrypted PII)" 
+                multiline 
+                rows={3} 
+                fullWidth 
+                placeholder="Enter sensitive customer information here..."
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }} 
+              />
+
+              {/* File Upload Field */}
+              <Box sx={{ mt: 1, p: 2, border: '1px dashed #cbd5e1', borderRadius: 1, bgcolor: '#f8fafc' }}>
+                <Typography variant="body2" sx={{ mb: 1, fontWeight: 600, color: '#475569' }}>
+                  Attachments (Optional)
+                </Typography>
+                <input
+                  type="file"
+                  multiple
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  onChange={(e) => setSelectedFiles(e.target.files ? Array.from(e.target.files) : [])}
+                  style={{ width: '100%', fontSize: '0.85rem' }}
+                />
+                {selectedFiles.length > 0 && (
+                  <Box sx={{ mt: 1 }}>
+                    {selectedFiles.map((f, i) => (
+                      <Typography key={i} variant="caption" sx={{ display: 'block', color: '#10b981', fontWeight: 500 }}>
+                        Selected: {f.name} ({(f.size / 1024).toFixed(1)} KB)
+                      </Typography>
+                    ))}
+                  </Box>
+                )}
+                <Typography variant="caption" sx={{ display: 'block', mt: 0.5, color: '#94a3b8' }}>
+                  Max 5MB per file. PDF, JPG, PNG only.
+                </Typography>
+              </Box>
             </div>
           </DialogContent>
           <DialogActions sx={{ px: 3.5, py: 2.5, borderTop: '1px solid #f1f5f9', gap: 1 }}>
@@ -1055,7 +1109,7 @@ export default function Leads() {
         <DialogContent sx={{ p: 3 }}>
           {docDialogId !== null && (
             <DocumentManager 
-              module="LEAD" 
+              module="LEADS" 
               referenceId={docDialogId} 
               title="Customer Documents (KYC)" 
             />

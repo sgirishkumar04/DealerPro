@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 public interface LeadService {
     PaginationResponse<LeadResponse> getLeads(Pageable pageable);
     LeadResponse createLead(LeadEntity lead);
+    LeadResponse createLeadWithFile(LeadEntity lead, java.util.List<org.springframework.web.multipart.MultipartFile> files);
     LeadResponse updateLeadStatus(Long id, String status, Long version);
     PaginationResponse<LeadResponse> searchLeads(com.kia.dms.common.dto.request.GlobalSearchRequest request);
     
@@ -18,5 +19,6 @@ public interface LeadService {
     TestDriveResponse scheduleTestDrive(TestDriveRequest request);
     TestDriveResponse updateTestDrive(Long id, TestDriveRequest request);
     LeadResponse updateLead(Long id, LeadEntity lead);
+    LeadResponse updateLeadWithFile(Long id, LeadEntity lead, java.util.List<org.springframework.web.multipart.MultipartFile> files);
     void deleteLead(Long id);
 }

@@ -63,17 +63,19 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(LoginRequest request) {
+        String email = request.getEmail() != null ? request.getEmail().trim() : "";
+        
         // Check if user exists first
-        UserEntity user = userRepository.findByEmail(request.getEmail()).orElse(null);
+        UserEntity user = userRepository.findByEmail(email).orElse(null);
         
         // Check if account is locked before attempting authentication (only if user exists)
         if (user != null) {
-            loginAttemptService.checkAccountLock(request.getEmail());
+            loginAttemptService.checkAccountLock(email);
         }
 
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                    new UsernamePasswordAuthenticationToken(email, request.getPassword())
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -83,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
 
             // Reset failed login attempts on successful login
             try {
-                loginAttemptService.loginSucceeded(request.getEmail());
+                loginAttemptService.loginSucceeded(email);
             } catch (Exception e) {
                 // Log but don't block login if reset fails
                 System.err.println("Failed to reset login attempts: " + e.getMessage());
@@ -314,7 +316,6 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
     }
 
-    @Cacheable(value = "user_by_email", key = "#email")
     public UserEntity getUserWithRoleFromCache(String email) {
         return userRepository.findByEmailWithRole(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));

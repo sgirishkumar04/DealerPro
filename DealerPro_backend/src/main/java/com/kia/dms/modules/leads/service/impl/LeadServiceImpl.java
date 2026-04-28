@@ -44,6 +44,7 @@ public class LeadServiceImpl implements LeadService {
     @Autowired private VehicleRepository vehicleRepository;
     @Autowired private UserRepository userRepository;
     @Autowired private DealerRepository dealerRepository;
+    @Autowired private com.kia.dms.modules.files.service.FileService fileService;
 
     private void applyMasking(LeadResponse res) {
         String role = com.kia.dms.common.utils.SecurityUtils.getCurrentUserRole();
@@ -116,6 +117,24 @@ public class LeadServiceImpl implements LeadService {
         if (lead.getStatus() == null) lead.setStatus("NEW");
         
         return mapToLeadResponse(leadRepository.save(lead));
+    }
+
+    @Override
+    @Transactional
+    public LeadResponse createLeadWithFile(LeadEntity lead, java.util.List<org.springframework.web.multipart.MultipartFile> files) {
+        LeadResponse response = createLead(lead);
+        if (files != null && !files.isEmpty()) {
+            for (org.springframework.web.multipart.MultipartFile file : files) {
+                if (file != null && !file.isEmpty()) {
+                    try {
+                        fileService.uploadFile(file, "LEADS", response.getId());
+                    } catch (java.io.IOException e) {
+                        throw new RuntimeException("Failed to upload file: " + e.getMessage(), e);
+                    }
+                }
+            }
+        }
+        return response;
     }
 
     @Override
@@ -373,6 +392,24 @@ public class LeadServiceImpl implements LeadService {
         // Vehicle interest string is sufficient for now
 
         return mapToLeadResponse(leadRepository.save(existingLead));
+    }
+
+    @Override
+    @Transactional
+    public LeadResponse updateLeadWithFile(Long id, LeadEntity lead, java.util.List<org.springframework.web.multipart.MultipartFile> files) {
+        LeadResponse response = updateLead(id, lead);
+        if (files != null && !files.isEmpty()) {
+            for (org.springframework.web.multipart.MultipartFile file : files) {
+                if (file != null && !file.isEmpty()) {
+                    try {
+                        fileService.uploadFile(file, "LEADS", response.getId());
+                    } catch (java.io.IOException e) {
+                        throw new RuntimeException("Failed to upload file: " + e.getMessage(), e);
+                    }
+                }
+            }
+        }
+        return response;
     }
 
     @Override

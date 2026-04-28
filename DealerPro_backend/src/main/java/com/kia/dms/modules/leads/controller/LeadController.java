@@ -50,31 +50,14 @@ public class LeadController {
         return ResponseEntity.ok(new ApiResponse<>(true, leadService.searchLeads(request), "Search results retrieved successfully"));
     }
 
-    @PostMapping
-    @Operation(
-        summary = "Create a new lead",
-        description = "Create a new lead entry"
-    )
-    @ApiResponses(value = {
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "201",
-            description = "Lead created successfully",
-            content = @Content(schema = @Schema(implementation = ApiResponse.class))
-        ),
-        @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400",
-            description = "Invalid input data"
-        )
-    })
+    @PostMapping(consumes = { org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE })
+    @Operation(summary = "Create a new lead with an optional file attachment")
     public ResponseEntity<ApiResponse<LeadResponse>> createLead(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                description = "Lead details",
-                required = true
-            )
-            @RequestBody LeadEntity lead) {
+            @RequestPart("lead") LeadEntity lead,
+            @RequestPart(value = "files", required = false) java.util.List<org.springframework.web.multipart.MultipartFile> files) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new ApiResponse<>(true, leadService.createLead(lead), "Lead created successfully"));
+                .body(new ApiResponse<>(true, leadService.createLeadWithFile(lead, files), "Lead created successfully"));
     }
 
     @PutMapping("/{id}/status")
@@ -99,12 +82,13 @@ public class LeadController {
         return ResponseEntity.ok(new ApiResponse<>(true, leadService.updateLeadStatus(id, status, version), "Lead status updated successfully"));
     }
 
-    @PutMapping("/{id}")
-    @Operation(summary = "Update a lead", description = "Update lead details")
+    @PutMapping(value = "/{id}", consumes = { org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE })
+    @Operation(summary = "Update a lead", description = "Update lead details and optionally attach files")
     public ResponseEntity<ApiResponse<LeadResponse>> updateLead(
             @PathVariable Long id,
-            @RequestBody LeadEntity lead) {
-        return ResponseEntity.ok(new ApiResponse<>(true, leadService.updateLead(id, lead), "Lead updated successfully"));
+            @RequestPart("lead") LeadEntity lead,
+            @RequestPart(value = "files", required = false) java.util.List<org.springframework.web.multipart.MultipartFile> files) {
+        return ResponseEntity.ok(new ApiResponse<>(true, leadService.updateLeadWithFile(id, lead, files), "Lead updated successfully"));
     }
 
     @DeleteMapping("/{id}")

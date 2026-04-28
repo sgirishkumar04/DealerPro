@@ -71,9 +71,7 @@ const DocumentManager: React.FC<DocumentManagerProps> = ({ module, referenceId, 
       formData.append('module', module);
       formData.append('referenceId', referenceId.toString());
 
-      await api.post('/api/files/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      await api.post('/api/files/upload', formData);
 
       toast.success("File uploaded successfully");
       setOpenUpload(false);

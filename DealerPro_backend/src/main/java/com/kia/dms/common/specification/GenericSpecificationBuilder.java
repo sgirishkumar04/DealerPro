@@ -12,21 +12,30 @@ public class GenericSpecificationBuilder<T> {
         return (root, query, cb) -> {
             List<Predicate> mainPredicates = new ArrayList<>();
 
-            // 1. Global Keyword Search (OR logic across searchable columns)
+            // 1. Global Keyword Search (Enhanced to support multiple terms like "Kia Seltos")
             if (request.getKeyword() != null && !request.getKeyword().trim().isEmpty() && searchableColumns != null && !searchableColumns.isEmpty()) {
-                String pattern = "%" + request.getKeyword().toLowerCase() + "%";
-                List<Predicate> keywordPredicates = new ArrayList<>();
-                
-                for (String column : searchableColumns) {
-                    try {
-                        Path<?> path = getPath(root, column);
-                        keywordPredicates.add(cb.like(cb.lower(path.as(String.class)), pattern));
-                    } catch (Exception e) {
-                        // Skip columns that don't exist or can't be cast to String
+                String[] terms = request.getKeyword().trim().split("\\s+");
+                List<Predicate> allTermsPredicates = new ArrayList<>();
+
+                for (String term : terms) {
+                    String pattern = "%" + term.toLowerCase() + "%";
+                    List<Predicate> singleTermPredicates = new ArrayList<>();
+                    
+                    for (String column : searchableColumns) {
+                        try {
+                            Path<?> path = getPath(root, column);
+                            singleTermPredicates.add(cb.like(cb.lower(path.as(String.class)), pattern));
+                        } catch (Exception e) {
+                            // Skip columns that don't exist or can't be cast to String
+                        }
+                    }
+                    if (!singleTermPredicates.isEmpty()) {
+                        allTermsPredicates.add(cb.or(singleTermPredicates.toArray(new Predicate[0])));
                     }
                 }
-                if (!keywordPredicates.isEmpty()) {
-                    mainPredicates.add(cb.or(keywordPredicates.toArray(new Predicate[0])));
+                
+                if (!allTermsPredicates.isEmpty()) {
+                    mainPredicates.add(cb.and(allTermsPredicates.toArray(new Predicate[0])));
                 }
             }
 

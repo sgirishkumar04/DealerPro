@@ -15,7 +15,7 @@ public class CacheConfig {
         ConcurrentMapCacheManager cacheManager = new ConcurrentMapCacheManager();
         cacheManager.setCacheNames(Arrays.asList(
             "users", "roles", "dealers", "vehicles", "parts", 
-            "inventory", "leads", "analytics", "user_by_email"
+            "inventory", "leads", "analytics"
         ));
         return cacheManager;
     }

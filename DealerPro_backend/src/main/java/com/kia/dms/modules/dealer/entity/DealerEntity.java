@@ -14,9 +14,11 @@ public class DealerEntity extends BaseEntity {
     @Column(length = 255)
     private String location;
 
+    @Convert(converter = com.kia.dms.common.specification.EncryptionConverter.class)
     @Column(name = "contact_number", length = 20)
     private String contactNumber;
 
+    @Convert(converter = com.kia.dms.common.specification.EncryptionConverter.class)
     @Column(length = 100)
     private String email;
 
