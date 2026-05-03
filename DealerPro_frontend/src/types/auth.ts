@@ -9,6 +9,7 @@ export interface User {
   firstName?: string;
   lastName?: string;
   roles: Role[];
+  role: Role;
   dealerId?: string;
   isActive: boolean;
 }
@@ -22,6 +23,7 @@ export interface AuthResponse {
   token: string;
   id: number;
   roles: Role[];
+  role: Role;
   name: string;
   firstName?: string;
   lastName?: string;

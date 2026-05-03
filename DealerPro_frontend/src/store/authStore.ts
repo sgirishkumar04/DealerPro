@@ -5,6 +5,7 @@ interface User {
   name: string;
   email: string;
   roles: string[];
+  role: string;
   token: string;
 }
 
