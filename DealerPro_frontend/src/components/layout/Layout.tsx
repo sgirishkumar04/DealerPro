@@ -17,9 +17,9 @@ export default function Layout() {
       const key = event.key.toLowerCase();
       
       // Check user role
-      const isManagerOrAdmin = user?.role === 'MANAGER' || user?.role === 'ADMIN' || 
-                               user?.role === 'ROLE_MANAGER' || user?.role === 'ROLE_ADMIN';
-      const isAdmin = user?.role === 'ADMIN' || user?.role === 'ROLE_ADMIN';
+      const roles = user?.roles || [];
+      const isManagerOrAdmin = roles.some(r => ['MANAGER', 'ADMIN', 'ROLE_MANAGER', 'ROLE_ADMIN'].includes(r));
+      const isAdmin = roles.some(r => ['ADMIN', 'ROLE_ADMIN'].includes(r));
 
       switch (key) {
         case 'd':

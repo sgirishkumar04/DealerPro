@@ -8,7 +8,7 @@ export interface User {
   name: string;
   firstName?: string;
   lastName?: string;
-  role: Role;
+  roles: Role[];
   dealerId?: string;
   isActive: boolean;
 }
@@ -21,7 +21,7 @@ export interface LoginCredentials {
 export interface AuthResponse {
   token: string;
   id: number;
-  role: Role;
+  roles: Role[];
   name: string;
   firstName?: string;
   lastName?: string;
@@ -32,5 +32,5 @@ export interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
-  role: Role | null;
+  roles: Role[];
 }

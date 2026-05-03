@@ -4,7 +4,7 @@ interface User {
   id: string;
   name: string;
   email: string;
-  role: string;
+  roles: string[];
   token: string;
 }
 

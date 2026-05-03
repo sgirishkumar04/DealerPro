@@ -61,7 +61,7 @@ export default function Sidebar() {
 
   if (!user) return null;
 
-  const role = user.role.replace('ROLE_', '');
+  const roles = user.roles.map(r => r.replace('ROLE_', ''));
 
   const navItems = [
     { to: '/dashboard', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
@@ -72,13 +72,13 @@ export default function Sidebar() {
     { to: '/service', icon: <Wrench size={20} />, label: 'Service' },
     { to: '/parts', icon: <PackageSearch size={20} />, label: 'Parts' },
     { to: '/audit-logs', icon: <FileText size={20} />, label: 'Audit Logs' },
-    ...(['ADMIN', 'MANAGER'].includes(role)
+    ...(['ADMIN', 'MANAGER'].some(r => roles.includes(r))
       ? [{ to: '/finance', icon: <IndianRupee size={20} />, label: 'Finance' }]
       : []),
-    ...(['ADMIN', 'MANAGER'].includes(role)
+    ...(['ADMIN', 'MANAGER'].some(r => roles.includes(r))
       ? [{ to: '/analytics', icon: <BarChart3 size={20} />, label: 'Analytics' }]
       : []),
-    ...(role === 'ADMIN'
+    ...(roles.includes('ADMIN')
       ? [{ to: '/admin', icon: <ShieldAlert size={20} />, label: 'Admin Panel' }]
       : []),
   ];
