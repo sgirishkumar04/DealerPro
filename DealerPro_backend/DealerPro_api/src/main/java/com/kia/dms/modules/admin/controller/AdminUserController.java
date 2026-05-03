@@ -52,7 +52,10 @@ public class AdminUserController {
                 dto.put("id", u.getId());
                 dto.put("name", u.getName());
                 dto.put("email", u.getEmail());
-                dto.put("role", u.getRole() != null ? u.getRole().getName() : null);
+                String roles = u.getRoles().stream()
+                    .map(RoleEntity::getName)
+                    .collect(Collectors.joining(", "));
+                dto.put("role", roles);
                 dto.put("dealerId", u.getDealer() != null ? u.getDealer().getId() : null);
                 dto.put("isActive", u.getIsActive() != null ? u.getIsActive() : true);
                 return dto;
@@ -78,7 +81,8 @@ public class AdminUserController {
         final String roleName = roleNameInput.startsWith("ROLE_") ? roleNameInput : "ROLE_" + roleNameInput;
         RoleEntity role = roleRepository.findByName(roleName)
             .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
-        user.setRole(role);
+        user.getRoles().clear();
+        user.getRoles().add(role);
         
         // Set dealer if role is DEALER
         if (roleName.equals("ROLE_DEALER") && request.get("dealerId") != null) {
@@ -94,7 +98,7 @@ public class AdminUserController {
         dto.put("id", saved.getId());
         dto.put("name", saved.getName());
         dto.put("email", saved.getEmail());
-        dto.put("role", saved.getRole().getName());
+        dto.put("role", saved.getRoles().stream().map(RoleEntity::getName).collect(Collectors.joining(", ")));
         dto.put("dealerId", saved.getDealer() != null ? saved.getDealer().getId() : null);
         dto.put("isActive", saved.getIsActive());
         
@@ -112,7 +116,8 @@ public class AdminUserController {
             final String roleName = roleNameInput.startsWith("ROLE_") ? roleNameInput : "ROLE_" + roleNameInput;
             RoleEntity role = roleRepository.findByName(roleName)
                 .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
-            user.setRole(role);
+            user.getRoles().clear();
+            user.getRoles().add(role);
         }
         
         // Update dealer if role is DEALER
@@ -129,7 +134,7 @@ public class AdminUserController {
         dto.put("id", updated.getId());
         dto.put("name", updated.getName());
         dto.put("email", updated.getEmail());
-        dto.put("role", updated.getRole().getName());
+        dto.put("role", updated.getRoles().stream().map(RoleEntity::getName).collect(Collectors.joining(", ")));
         dto.put("dealerId", updated.getDealer() != null ? updated.getDealer().getId() : null);
         dto.put("isActive", updated.getIsActive());
         
@@ -148,7 +153,7 @@ public class AdminUserController {
         dto.put("id", updated.getId());
         dto.put("name", updated.getName());
         dto.put("email", updated.getEmail());
-        dto.put("role", updated.getRole().getName());
+        dto.put("role", updated.getRoles().stream().map(RoleEntity::getName).collect(Collectors.joining(", ")));
         dto.put("dealerId", updated.getDealer() != null ? updated.getDealer().getId() : null);
         dto.put("isActive", updated.getIsActive());
         
@@ -184,7 +189,10 @@ public class AdminUserController {
                 dto.put("id", u.getId());
                 dto.put("name", u.getName());
                 dto.put("email", u.getEmail());
-                dto.put("role", u.getRole() != null ? u.getRole().getName() : null);
+                String roles = u.getRoles().stream()
+                    .map(RoleEntity::getName)
+                    .collect(Collectors.joining(", "));
+                dto.put("role", roles);
                 dto.put("dealerId", u.getDealer() != null ? u.getDealer().getId() : null);
                 dto.put("isActive", u.getIsActive() != null ? u.getIsActive() : true);
                 return dto;

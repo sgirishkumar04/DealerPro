@@ -3,6 +3,8 @@ package com.kia.dms.modules.user.entity;
 import com.kia.dms.audit.BaseEntity;
 import com.kia.dms.modules.dealer.entity.DealerEntity;
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -23,9 +25,13 @@ public class UserEntity extends BaseEntity {
     @Column(length = 255, nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-    private RoleEntity role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dealer_id")
@@ -70,8 +76,8 @@ public class UserEntity extends BaseEntity {
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public RoleEntity getRole() { return role; }
-    public void setRole(RoleEntity role) { this.role = role; }
+    public Set<RoleEntity> getRoles() { return roles; }
+    public void setRoles(Set<RoleEntity> roles) { this.roles = roles; }
     public DealerEntity getDealer() { return dealer; }
     public void setDealer(DealerEntity dealer) { this.dealer = dealer; }
     public ManagerEntity getManagerProfile() { return managerProfile; }

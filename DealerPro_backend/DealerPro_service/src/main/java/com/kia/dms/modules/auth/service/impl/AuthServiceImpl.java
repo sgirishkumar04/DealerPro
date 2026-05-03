@@ -25,7 +25,9 @@ import com.kia.dms.modules.auth.dto.request.ResetPasswordRequest;
 import com.kia.dms.modules.auth.dto.request.ResendOtpRequest;
 import com.kia.dms.modules.auth.service.EmailService;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -91,7 +93,11 @@ public class AuthServiceImpl implements AuthService {
                 System.err.println("Failed to reset login attempts: " + e.getMessage());
             }
 
-            return new AuthResponse(jwt, authenticatedUser.getId(), authenticatedUser.getRole().getName(), 
+            List<String> roles = authenticatedUser.getRoles().stream()
+                    .map(RoleEntity::getName)
+                    .collect(Collectors.toList());
+
+            return new AuthResponse(jwt, authenticatedUser.getId(), roles, 
                     authenticatedUser.getName(), authenticatedUser.getFirstName(), authenticatedUser.getLastName(), 
                     authenticatedUser.getEmail());
         } catch (org.springframework.security.authentication.LockedException e) {
@@ -161,7 +167,7 @@ public class AuthServiceImpl implements AuthService {
         }
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(role);
+        user.getRoles().add(role);
         user.setIsEmailVerified(true);
 
         // First save user to get the ID
@@ -227,7 +233,8 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
 
-        return new AuthResponse(jwt, user.getId(), role.getName(), user.getName(), user.getFirstName(), user.getLastName(), user.getEmail());
+        List<String> rolesList = java.util.Collections.singletonList(role.getName());
+        return new AuthResponse(jwt, user.getId(), rolesList, user.getName(), user.getFirstName(), user.getLastName(), user.getEmail());
     }
 
     @Override

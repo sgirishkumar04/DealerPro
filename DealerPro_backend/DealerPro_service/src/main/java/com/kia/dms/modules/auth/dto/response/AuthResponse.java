@@ -1,18 +1,20 @@
 package com.kia.dms.modules.auth.dto.response;
 
+import java.util.List;
+
 public class AuthResponse {
     private String token;
     private Long id;
-    private String role;
+    private List<String> roles;
     private String name;
     private String firstName;
     private String lastName;
     private String email;
 
-    public AuthResponse(String token, Long id, String role, String name, String firstName, String lastName, String email) {
+    public AuthResponse(String token, Long id, List<String> roles, String name, String firstName, String lastName, String email) {
         this.token = token;
         this.id = id;
-        this.role = role;
+        this.roles = roles;
         this.name = name;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -23,8 +25,8 @@ public class AuthResponse {
     public void setToken(String token) { this.token = token; }
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public List<String> getRoles() { return roles; }
+    public void setRoles(List<String> roles) { this.roles = roles; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getFirstName() { return firstName; }
