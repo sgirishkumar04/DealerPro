@@ -8,7 +8,7 @@ export const authService = {
    * Login with email and password
    */
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-    const response = await apiClient.post<{ data: AuthResponse }>('/api/auth/login', credentials);
+    const response = await apiClient.post<{ data: AuthResponse }>('/api/v1/auth/login', credentials);
     return (response.data as any).data;
   },
 
@@ -16,14 +16,14 @@ export const authService = {
    * Logout current user
    */
   logout: async (): Promise<void> => {
-    await apiClient.post('/api/auth/logout');
+    await apiClient.post('/api/v1/auth/logout');
   },
 
   /**
    * Get current user profile
    */
   getCurrentUser: async (): Promise<User> => {
-    const response = await apiClient.get<{ data: User }>('/api/auth/me');
+    const response = await apiClient.get<{ data: User }>('/api/v1/auth/me');
     return (response.data as any).data;
   },
 
@@ -31,7 +31,7 @@ export const authService = {
    * Refresh authentication token
    */
   refreshToken: async (): Promise<AuthResponse> => {
-    const response = await apiClient.post<{ data: AuthResponse }>('/api/auth/refresh');
+    const response = await apiClient.post<{ data: AuthResponse }>('/api/v1/auth/refresh');
     return (response.data as any).data;
   },
 
@@ -40,7 +40,7 @@ export const authService = {
    */
   verifyToken: async (token: string): Promise<boolean> => {
     try {
-      const response = await apiClient.post<{ data: { valid: boolean } }>('/api/auth/verify', { token });
+      const response = await apiClient.post<{ data: { valid: boolean } }>('/api/v1/auth/verify', { token });
       return (response.data as any).data.valid;
     } catch {
       return false;

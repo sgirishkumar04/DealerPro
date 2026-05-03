@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/audit-logs")
+@RequestMapping("/api/v1/audit-logs")
 @Tag(name = "Audit Logs", description = "Audit Log Management APIs")
 @SecurityRequirement(name = "Bearer Authentication")
 public class AuditLogController {

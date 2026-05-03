@@ -42,7 +42,7 @@ export default function VerifyEmailPage() {
 
   const handleResend = async () => {
     try {
-      await api.post('/api/auth/resend-otp', { email });
+      await api.post('/api/v1/auth/resend-otp', { email });
       toast.success('New OTP sent to your email!');
     } catch (err: any) {
       toast.error('Failed to resend OTP. Please try again.');
@@ -52,7 +52,7 @@ export default function VerifyEmailPage() {
   const onSubmit = async (data: VerifyForm) => {
     setIsLoading(true);
     try {
-      await api.post('/api/auth/verify-email', {
+      await api.post('/api/v1/auth/verify-email', {
         email,
         otp: data.otp,
       });

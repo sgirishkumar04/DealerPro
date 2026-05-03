@@ -370,7 +370,7 @@ export default function Parts() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/parts/search', {
+      const { data } = await api.post('/api/v1/parts/search', {
         keyword,
         filters,
         sorts,
@@ -388,7 +388,7 @@ export default function Parts() {
   const { data: dealersData } = useQuery({
     queryKey: ['dealers'],
     queryFn: async () => {
-      const { data } = await api.get('/api/dealers?page=0&size=1000');
+      const { data } = await api.get('/api/v1/dealers?page=0&size=1000');
       return data.data;
     },
     enabled: isAdmin

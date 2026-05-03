@@ -9,7 +9,7 @@ export const financeService = {
    * Get all transactions
    */
   getAll: async (params?: QueryParams): Promise<PaginatedResponse<Transaction>> => {
-    const response = await apiClient.get<PaginatedResponse<Transaction>>('/api/transactions', { params });
+    const response = await apiClient.get<PaginatedResponse<Transaction>>('/api/v1/transactions', { params });
     return response.data;
   },
 
@@ -17,7 +17,7 @@ export const financeService = {
    * Get transaction by ID
    */
   getById: async (id: string): Promise<Transaction> => {
-    const response = await apiClient.get<Transaction>(`/api/transactions/${id}`);
+    const response = await apiClient.get<Transaction>(`/api/v1/transactions/${id}`);
     return response.data;
   },
 
@@ -25,7 +25,7 @@ export const financeService = {
    * Create new transaction
    */
   create: async (data: CreateTransactionDto): Promise<Transaction> => {
-    const response = await apiClient.post<Transaction>('/api/transactions', data);
+    const response = await apiClient.post<Transaction>('/api/v1/transactions', data);
     return response.data;
   },
 
@@ -33,7 +33,7 @@ export const financeService = {
    * Update existing transaction
    */
   update: async (id: string, data: Partial<CreateTransactionDto>): Promise<Transaction> => {
-    const response = await apiClient.put<Transaction>(`/api/transactions/${id}`, data);
+    const response = await apiClient.put<Transaction>(`/api/v1/transactions/${id}`, data);
     return response.data;
   },
 
@@ -41,7 +41,7 @@ export const financeService = {
    * Delete transaction
    */
   delete: async (id: string): Promise<void> => {
-    await apiClient.delete(`/api/transactions/${id}`);
+    await apiClient.delete(`/api/v1/transactions/${id}`);
   },
 
   /**

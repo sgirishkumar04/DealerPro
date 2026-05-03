@@ -9,7 +9,7 @@ export const salesService = {
    * Get all orders with pagination and filters
    */
   getAll: async (params?: QueryParams): Promise<PaginatedResponse<Order>> => {
-    const response = await apiClient.get<PaginatedResponse<Order>>('/api/orders', { params });
+    const response = await apiClient.get<PaginatedResponse<Order>>('/api/v1/orders', { params });
     return response.data;
   },
 
@@ -17,7 +17,7 @@ export const salesService = {
    * Get order by ID
    */
   getById: async (id: string): Promise<Order> => {
-    const response = await apiClient.get<Order>(`/api/orders/${id}`);
+    const response = await apiClient.get<Order>(`/api/v1/orders/${id}`);
     return response.data;
   },
 
@@ -25,7 +25,7 @@ export const salesService = {
    * Create new order
    */
   create: async (data: CreateOrderDto): Promise<Order> => {
-    const response = await apiClient.post<Order>('/api/orders', data);
+    const response = await apiClient.post<Order>('/api/v1/orders', data);
     return response.data;
   },
 
@@ -33,7 +33,7 @@ export const salesService = {
    * Update existing order
    */
   update: async (id: string, data: UpdateOrderDto): Promise<Order> => {
-    const response = await apiClient.put<Order>(`/api/orders/${id}`, data);
+    const response = await apiClient.put<Order>(`/api/v1/orders/${id}`, data);
     return response.data;
   },
 
@@ -41,7 +41,7 @@ export const salesService = {
    * Delete order
    */
   delete: async (id: string): Promise<void> => {
-    await apiClient.delete(`/api/orders/${id}`);
+    await apiClient.delete(`/api/v1/orders/${id}`);
   },
 
   /**

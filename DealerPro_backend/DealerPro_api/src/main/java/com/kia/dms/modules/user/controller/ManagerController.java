@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/managers")
+@RequestMapping("/api/v1/managers")
 public class ManagerController {
 
     @Autowired

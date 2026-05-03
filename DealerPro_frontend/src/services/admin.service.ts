@@ -105,7 +105,7 @@ export const adminService = {
    * Advanced search for managers
    */
   searchManagers: async (searchRequest: any): Promise<any> => {
-    const response = await apiClient.post('/api/managers/search', searchRequest);
+    const response = await apiClient.post('/api/v1/managers/search', searchRequest);
     return response.data.data;
   },
 
@@ -113,7 +113,7 @@ export const adminService = {
    * Advanced search for admins
    */
   searchAdmins: async (searchRequest: any): Promise<any> => {
-    const response = await apiClient.post('/api/admins/search', searchRequest);
+    const response = await apiClient.post('/api/v1/admins/search', searchRequest);
     return response.data.data;
   },
 };

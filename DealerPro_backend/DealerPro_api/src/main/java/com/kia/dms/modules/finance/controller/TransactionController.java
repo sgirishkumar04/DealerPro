@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import com.kia.dms.common.dto.request.GlobalSearchRequest;
 
 @RestController
-@RequestMapping("/api/transactions")
+@RequestMapping("/api/v1/transactions")
 @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
 public class TransactionController {
 

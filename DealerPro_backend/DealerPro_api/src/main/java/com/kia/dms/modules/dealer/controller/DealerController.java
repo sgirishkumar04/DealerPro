@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/dealers")
+@RequestMapping("/api/v1/dealers")
 @Tag(name = "Dealers", description = "Dealer Management APIs")
 @SecurityRequirement(name = "Bearer Authentication")
 public class DealerController {

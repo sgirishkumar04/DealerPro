@@ -49,7 +49,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (stored) {
       try {
         const user = JSON.parse(stored);
-        await fetch('http://localhost:8083/api/auth/logout', {
+        await fetch('http://localhost:8083/api/v1/auth/logout', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${user.token}`

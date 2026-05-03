@@ -556,7 +556,7 @@ export default function AuditLogs() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/audit-logs/search', {
+      const { data } = await api.post('/api/v1/audit-logs/search', {
         keyword,
         filters,
         sorts,

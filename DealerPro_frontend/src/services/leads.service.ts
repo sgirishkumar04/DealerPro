@@ -9,7 +9,7 @@ export const leadsService = {
    * Get all leads with pagination and filters
    */
   getAll: async (params?: QueryParams): Promise<PaginatedResponse<Lead>> => {
-    const response = await apiClient.get<PaginatedResponse<Lead>>('/api/leads', { params });
+    const response = await apiClient.get<PaginatedResponse<Lead>>('/api/v1/leads', { params });
     return response.data;
   },
 
@@ -17,7 +17,7 @@ export const leadsService = {
    * Get lead by ID
    */
   getById: async (id: string): Promise<Lead> => {
-    const response = await apiClient.get<Lead>(`/api/leads/${id}`);
+    const response = await apiClient.get<Lead>(`/api/v1/leads/${id}`);
     return response.data;
   },
 
@@ -25,7 +25,7 @@ export const leadsService = {
    * Create new lead
    */
   create: async (data: CreateLeadDto): Promise<Lead> => {
-    const response = await apiClient.post<Lead>('/api/leads', data);
+    const response = await apiClient.post<Lead>('/api/v1/leads', data);
     return response.data;
   },
 
@@ -33,7 +33,7 @@ export const leadsService = {
    * Update existing lead
    */
   update: async (id: string, data: UpdateLeadDto): Promise<Lead> => {
-    const response = await apiClient.put<Lead>(`/api/leads/${id}`, data);
+    const response = await apiClient.put<Lead>(`/api/v1/leads/${id}`, data);
     return response.data;
   },
 
@@ -41,14 +41,14 @@ export const leadsService = {
    * Delete lead
    */
   delete: async (id: string): Promise<void> => {
-    await apiClient.delete(`/api/leads/${id}`);
+    await apiClient.delete(`/api/v1/leads/${id}`);
   },
 
   /**
    * Get all test drives
    */
   getTestDrives: async (params?: QueryParams): Promise<PaginatedResponse<TestDrive>> => {
-    const response = await apiClient.get<PaginatedResponse<TestDrive>>('/api/test-drives', { params });
+    const response = await apiClient.get<PaginatedResponse<TestDrive>>('/api/v1/test-drives', { params });
     return response.data;
   },
 
@@ -56,7 +56,7 @@ export const leadsService = {
    * Schedule test drive
    */
   scheduleTestDrive: async (data: CreateTestDriveDto): Promise<TestDrive> => {
-    const response = await apiClient.post<TestDrive>('/api/test-drives', data);
+    const response = await apiClient.post<TestDrive>('/api/v1/test-drives', data);
     return response.data;
   },
 
@@ -64,7 +64,7 @@ export const leadsService = {
    * Update test drive
    */
   updateTestDrive: async (id: string, data: Partial<CreateTestDriveDto>): Promise<TestDrive> => {
-    const response = await apiClient.put<TestDrive>(`/api/test-drives/${id}`, data);
+    const response = await apiClient.put<TestDrive>(`/api/v1/test-drives/${id}`, data);
     return response.data;
   },
 
@@ -72,6 +72,6 @@ export const leadsService = {
    * Cancel test drive
    */
   cancelTestDrive: async (id: string): Promise<void> => {
-    await apiClient.delete(`/api/test-drives/${id}`);
+    await apiClient.delete(`/api/v1/test-drives/${id}`);
   },
 };

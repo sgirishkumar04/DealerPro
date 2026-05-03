@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/kia-cars")
+@RequestMapping("/api/v1/kia-cars")
 public class KiaCarController {
 
     @Autowired

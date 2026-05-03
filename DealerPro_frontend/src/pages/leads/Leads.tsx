@@ -450,7 +450,7 @@ export default function Leads() {
   const { data: dealersData } = useQuery({
     queryKey: ['dealers'],
     queryFn: async () => {
-      const { data } = await api.get('/api/dealers?page=0&size=1000');
+      const { data } = await api.get('/api/v1/dealers?page=0&size=1000');
       return data.data;
     },
     enabled: isManagerOrAdmin
@@ -460,7 +460,7 @@ export default function Leads() {
   const { data: modelsData = [] } = useQuery({
     queryKey: ['kia-cars'],
     queryFn: async () => {
-      const { data } = await api.get('/api/kia-cars');
+      const { data } = await api.get('/api/v1/kia-cars');
       return data.data;
     }
   });
@@ -494,7 +494,7 @@ export default function Leads() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/leads/search', {
+      const { data } = await api.post('/api/v1/leads/search', {
         keyword,
         filters,
         sorts,
@@ -537,7 +537,7 @@ export default function Leads() {
       
       const config = { headers: { 'Content-Type': 'multipart/form-data' } };
       
-      return editId ? api.put(`/api/leads/${editId}`, formData, config) : api.post('/api/leads', formData, config);
+      return editId ? api.put(`/api/v1/leads/${editId}`, formData, config) : api.post('/api/v1/leads', formData, config);
     },
     onSuccess: () => {
       toast.success(editId ? 'Lead updated successfully' : 'Lead added successfully');
@@ -623,7 +623,7 @@ export default function Leads() {
 
   const statusMutation = useMutation({
     mutationFn: ({ id, status, version }: { id: number, status: string, version?: number }) => 
-      api.put(`/api/leads/${id}/status?status=${status}${version !== undefined ? `&version=${version}` : ''}`),
+      api.put(`/api/v1/leads/${id}/status?status=${status}${version !== undefined ? `&version=${version}` : ''}`),
     onSuccess: () => {
       toast.success('Status updated');
       queryClient.invalidateQueries({ queryKey: ['leads'] });
@@ -638,7 +638,7 @@ export default function Leads() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => api.delete(`/api/leads/${id}`),
+    mutationFn: (id: number) => api.delete(`/api/v1/leads/${id}`),
     onSuccess: () => {
       toast.success('Lead deleted successfully');
       queryClient.invalidateQueries({ queryKey: ['leads'] });

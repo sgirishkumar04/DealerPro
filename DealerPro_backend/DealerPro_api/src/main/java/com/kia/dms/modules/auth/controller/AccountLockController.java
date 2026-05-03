@@ -12,7 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/account-lock")
+@RequestMapping("/api/v1/account-lock")
 @Tag(name = "Account Lock Management", description = "APIs for managing account locks")
 @SecurityRequirement(name = "Bearer Authentication")
 public class AccountLockController {

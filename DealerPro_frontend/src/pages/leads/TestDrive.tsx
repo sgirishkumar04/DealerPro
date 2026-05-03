@@ -442,7 +442,7 @@ export default function TestDrive() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/test-drives/search', {
+      const { data } = await api.post('/api/v1/test-drives/search', {
         keyword,
         filters,
         sorts,
@@ -457,18 +457,18 @@ export default function TestDrive() {
 
   const { data: leads } = useQuery({
     queryKey: ['leads_list'],
-    queryFn: async () => { const { data } = await api.get('/api/leads?page=0&size=100'); return data.data.content; }
+    queryFn: async () => { const { data } = await api.get('/api/v1/leads?page=0&size=100'); return data.data.content; }
   });
 
   const { data: vehicles } = useQuery({
     queryKey: ['vehicles_catalog'],
-    queryFn: async () => { const { data } = await api.get('/api/vehicles?page=0&size=100'); return data.data.content; }
+    queryFn: async () => { const { data } = await api.get('/api/v1/vehicles?page=0&size=100'); return data.data.content; }
   });
 
   const { data: kiaCars = [] } = useQuery<any[]>({
     queryKey: ['kia-cars'],
     queryFn: async () => {
-      const { data } = await api.get('/api/kia-cars');
+      const { data } = await api.get('/api/v1/kia-cars');
       return data.data;
     },
     staleTime: Infinity,
@@ -478,7 +478,7 @@ export default function TestDrive() {
   const { data: dealersData } = useQuery({
     queryKey: ['dealers'],
     queryFn: async () => {
-      const { data } = await api.get('/api/dealers?page=0&size=1000');
+      const { data } = await api.get('/api/v1/dealers?page=0&size=1000');
       return data.data;
     },
     enabled: isManagerOrAdmin
@@ -542,7 +542,7 @@ export default function TestDrive() {
         payload.dealerId = selectedDealer.id;
       }
       
-      return editId ? api.put(`/api/test-drives/${editId}`, payload) : api.post('/api/test-drives', payload);
+      return editId ? api.put(`/api/v1/test-drives/${editId}`, payload) : api.post('/api/v1/test-drives', payload);
     },
     onSuccess: () => {
       toast.success(editId ? 'Test drive updated' : 'Test drive scheduled');

@@ -428,7 +428,7 @@ export default function Finance() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/transactions/search', {
+      const { data } = await api.post('/api/v1/transactions/search', {
         keyword,
         filters,
         sorts,
@@ -443,7 +443,7 @@ export default function Finance() {
   const { data: transposedData, isLoading: isTransposedLoading } = useQuery({
     queryKey: ['transposedFinance'],
     queryFn: async () => {
-      const { data } = await api.get('/api/transactions/transposed');
+      const { data } = await api.get('/api/v1/transactions/transposed');
       return data.data as { quarters: string[]; data: Record<string, number[]> };
     },
     enabled: transpose,
@@ -469,7 +469,7 @@ export default function Finance() {
 
   const handleDownloadInvoice = async (id: number) => {
     try {
-      const response = await api.get(`/api/transactions/invoice/${id}`, {
+      const response = await api.get(`/api/v1/transactions/invoice/${id}`, {
         responseType: 'blob'
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));

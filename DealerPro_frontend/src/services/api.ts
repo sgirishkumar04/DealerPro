@@ -22,8 +22,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const isLoginRequest = error.config?.url?.includes('/api/auth/login');
-    const isSignupRequest = error.config?.url?.includes('/api/auth/signup');
+    const isLoginRequest = error.config?.url?.includes('/auth/login');
+    const isSignupRequest = error.config?.url?.includes('/auth/signup');
     const isLoginPage = window.location.pathname === '/login';
     const isSignupPage = window.location.pathname === '/signup';
 

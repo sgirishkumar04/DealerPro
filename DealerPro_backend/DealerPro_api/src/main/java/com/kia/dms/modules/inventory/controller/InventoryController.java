@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Arrays;
 
 @RestController
-@RequestMapping("/api/inventory")
+@RequestMapping("/api/v1/inventory")
 public class InventoryController {
 
     @Autowired

@@ -113,7 +113,7 @@ export default function LoginPage() {
     const email = watch('email');
     if (!email) return;
     try {
-      await api.post('/api/auth/resend-otp', { email });
+      await api.post('/api/v1/auth/resend-otp', { email });
       toast.success('New OTP sent to your email!');
       navigate(`/verify-email?email=${encodeURIComponent(email)}`);
     } catch (err: any) {

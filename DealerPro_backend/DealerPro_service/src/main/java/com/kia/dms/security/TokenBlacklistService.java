@@ -29,6 +29,13 @@ public class TokenBlacklistService {
     }
 
     /**
+     * Get all currently blacklisted JTIs (for demo/debug purposes).
+     */
+    public java.util.Set<String> getBlacklistedTokens() {
+        return blacklist.keySet();
+    }
+
+    /**
      * Check if a token JTI is in the blacklist.
      */
     public boolean isBlacklisted(String jti) {

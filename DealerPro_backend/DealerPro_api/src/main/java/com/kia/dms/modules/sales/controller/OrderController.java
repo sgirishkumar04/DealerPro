@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.kia.dms.common.dto.request.GlobalSearchRequest;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
 
     @Autowired private OrderService orderService;

@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
   const onSubmit = async (data: ForgotForm) => {
     setIsLoading(true);
     try {
-      await api.post('/api/auth/forgot-password', {
+      await api.post('/api/v1/auth/forgot-password', {
         email: data.email,
       });
       toast.success('OTP sent to your email!');

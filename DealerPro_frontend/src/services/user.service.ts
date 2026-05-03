@@ -43,7 +43,7 @@ export const userService = {
   },
 
   search: async (searchRequest: any): Promise<any> => {
-    const response = await apiClient.post('/api/users/search', searchRequest);
+    const response = await apiClient.post('/api/v1/users/search', searchRequest);
     return response.data.data;
   }
 };

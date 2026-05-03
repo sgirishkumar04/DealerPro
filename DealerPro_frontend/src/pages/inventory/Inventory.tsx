@@ -490,7 +490,7 @@ export default function Inventory() {
   const { data: kiaCars = [] } = useQuery<KiaCar[]>({
     queryKey: ['kia-cars'],
     queryFn: async () => {
-      const { data } = await api.get('/api/kia-cars');
+      const { data } = await api.get('/api/v1/kia-cars');
       return data.data;
     },
     staleTime: Infinity,
@@ -500,7 +500,7 @@ export default function Inventory() {
   const { data: dealersData } = useQuery({
     queryKey: ['dealers-list'],
     queryFn: async () => {
-      const { data } = await api.get('/api/dealers?page=0&size=10000');
+      const { data } = await api.get('/api/v1/dealers?page=0&size=10000');
       return data.data?.content || [];
     },
     enabled: needsDealerSelect,
@@ -531,7 +531,7 @@ export default function Inventory() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/inventory/search', {
+      const { data } = await api.post('/api/v1/inventory/search', {
         keyword,
         filters,
         sorts,
@@ -558,7 +558,7 @@ export default function Inventory() {
         version: currentVersion,
         ...(needsDealerSelect && selectedDealerId ? { dealerId: selectedDealerId } : {}),
       };
-      return editId ? api.put(`/api/inventory/${editId}`, payload) : api.post('/api/inventory', payload);
+      return editId ? api.put(`/api/v1/inventory/${editId}`, payload) : api.post('/api/v1/inventory', payload);
     },
     onSuccess: () => {
       toast.success(editId ? 'Inventory updated' : 'Stock added');
@@ -569,7 +569,7 @@ export default function Inventory() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => api.delete(`/api/inventory/${id}`),
+    mutationFn: (id: number) => api.delete(`/api/v1/inventory/${id}`),
     onSuccess: () => {
       toast.success('Record deleted');
       queryClient.invalidateQueries({ queryKey: ['inventory'] });

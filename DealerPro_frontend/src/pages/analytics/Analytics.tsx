@@ -371,7 +371,7 @@ export default function Analytics() {
   const { data, isLoading } = useQuery({
     queryKey: ['dealerPerformance', startDate, endDate],
     queryFn: async () => {
-      let url = '/api/analytics/dealer-performance?page=0&size=10000';
+      let url = '/api/v1/analytics/dealer-performance?page=0&size=10000';
       if (startDate) url += `&startDate=${startDate.toISOString()}`;
       if (endDate) url += `&endDate=${endDate.toISOString()}`;
       const { data } = await api.get(url);
@@ -388,7 +388,7 @@ export default function Analytics() {
   const { data: transposedSalesData } = useQuery({
     queryKey: ['transposedSales'],
     queryFn: async () => {
-      const { data } = await api.get('/api/analytics/monthly-sales-transposed');
+      const { data } = await api.get('/api/v1/analytics/monthly-sales-transposed');
       return data.data;
     },
     staleTime: 60000,

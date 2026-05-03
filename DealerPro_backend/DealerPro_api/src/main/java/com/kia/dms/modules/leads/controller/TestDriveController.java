@@ -17,7 +17,7 @@ import com.kia.dms.common.dto.request.GlobalSearchRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/test-drives")
+@RequestMapping("/api/v1/test-drives")
 @Tag(name = "Test Drives", description = "Test Drive Management APIs")
 @SecurityRequirement(name = "Bearer Authentication")
 public class TestDriveController {

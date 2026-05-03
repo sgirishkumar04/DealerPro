@@ -377,7 +377,7 @@ export default function Service() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/service-orders/search', {
+      const { data } = await api.post('/api/v1/service-orders/search', {
         keyword,
         filters,
         sorts,
@@ -394,7 +394,7 @@ export default function Service() {
   const { data: kiaCars = [] } = useQuery<KiaCar[]>({
     queryKey: ['kia-cars'],
     queryFn: async () => {
-      const { data } = await api.get('/api/kia-cars');
+      const { data } = await api.get('/api/v1/kia-cars');
       return data.data;
     },
     staleTime: Infinity,
@@ -404,7 +404,7 @@ export default function Service() {
   const { data: dealersData } = useQuery({
     queryKey: ['dealers'],
     queryFn: async () => {
-      const { data } = await api.get('/api/dealers?page=0&size=1000');
+      const { data } = await api.get('/api/v1/dealers?page=0&size=1000');
       return data.data;
     },
     enabled: isManagerOrAdmin
@@ -433,7 +433,7 @@ export default function Service() {
       if (isManagerOrAdmin && selectedDealer) {
         payload.dealerId = selectedDealer.id;
       }
-      return api.post('/api/service-orders', payload);
+      return api.post('/api/v1/service-orders', payload);
     },
     onSuccess: () => {
       toast.success('Order created');
@@ -449,13 +449,13 @@ export default function Service() {
 
   const stM = useMutation({
     mutationFn: ({ id, st, version }: { id: number, st: string, version?: number }) => 
-      api.put(`/api/service-orders/${id}/status?status=${st}${version !== undefined ? `&version=${version}` : ''}`),
+      api.put(`/api/v1/service-orders/${id}/status?status=${st}${version !== undefined ? `&version=${version}` : ''}`),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['services'] })
   });
 
   const handleDownloadReport = async (id: number) => {
     try {
-      const response = await api.get(`/api/service-orders/${id}/report`, {
+      const response = await api.get(`/api/v1/service-orders/${id}/report`, {
         responseType: 'blob'
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));

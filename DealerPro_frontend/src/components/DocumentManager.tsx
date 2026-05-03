@@ -41,7 +41,7 @@ const DocumentManager: React.FC<DocumentManagerProps> = ({ module, referenceId, 
     if (!referenceId) return;
     try {
       setLoading(true);
-      const res = await api.get(`/api/files/module/${module}/${referenceId}`);
+      const res = await api.get(`/api/v1/files/module/${module}/${referenceId}`);
       console.log(`Documents loaded for ${module} ID ${referenceId}:`, res.data);
       setFiles(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
@@ -71,7 +71,7 @@ const DocumentManager: React.FC<DocumentManagerProps> = ({ module, referenceId, 
       formData.append('module', module);
       formData.append('referenceId', referenceId.toString());
 
-      await api.post('/api/files/upload', formData);
+      await api.post('/api/v1/files/upload', formData);
 
       toast.success("File uploaded successfully");
       setOpenUpload(false);
@@ -86,7 +86,7 @@ const DocumentManager: React.FC<DocumentManagerProps> = ({ module, referenceId, 
 
   const handleDownload = async (id: number, fileName: string) => {
     try {
-      const response = await api.get(`/api/files/download/${id}`, {
+      const response = await api.get(`/api/v1/files/download/${id}`, {
         responseType: 'blob'
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -104,7 +104,7 @@ const DocumentManager: React.FC<DocumentManagerProps> = ({ module, referenceId, 
   const handleDelete = async (id: number) => {
     if (!window.confirm("Are you sure you want to delete this document?")) return;
     try {
-      await api.delete(`/api/files/${id}`);
+      await api.delete(`/api/v1/files/${id}`);
       toast.success("File deleted");
       fetchFiles();
     } catch (err) {
@@ -114,7 +114,7 @@ const DocumentManager: React.FC<DocumentManagerProps> = ({ module, referenceId, 
 
   const handlePreview = async (file: FileDocument) => {
     try {
-      const response = await api.get(`/api/files/download/${file.id}`, {
+      const response = await api.get(`/api/v1/files/download/${file.id}`, {
         responseType: 'blob'
       });
       const url = window.URL.createObjectURL(new Blob([response.data], { type: file.fileType }));

@@ -55,10 +55,19 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/managers").permitAll()
-                        .requestMatchers("/api/dealers").permitAll()
-                        .requestMatchers("/api/admin/**").authenticated()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/security/**").permitAll()
+                        .requestMatchers(
+                            "/v3/api-docs/**",
+                            "/swagger-ui/**",
+                            "/swagger-ui.html",
+                            "/api/v1/api-docs/**",
+                            "/api/v1/swagger-ui/**",
+                            "/api/v1/swagger-ui.html"
+                        ).permitAll()
+                        .requestMatchers("/api/v1/managers").permitAll()
+                        .requestMatchers("/api/v1/dealers").permitAll()
+                        .requestMatchers("/api/v1/admin/**").authenticated()
                         .anyRequest().authenticated()
                 );
 

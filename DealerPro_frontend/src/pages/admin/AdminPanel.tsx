@@ -424,7 +424,7 @@ function DealersManagedCell({ managerId }: { managerId: number }) {
   useEffect(() => {
     const fetchDealers = async () => {
       try {
-        const { data } = await api.get(`/api/managers/${managerId}/dealers`);
+        const { data } = await api.get(`/api/v1/managers/${managerId}/dealers`);
         const dealerList = data.data || [];
         if (dealerList.length === 0) {
           setDealers('No dealers');
@@ -500,7 +500,7 @@ export default function AdminPanel() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/dealers/search', {
+      const { data } = await api.post('/api/v1/dealers/search', {
         keyword: dealerSearchTerm,
         filters,
         sorts,
@@ -525,7 +525,7 @@ export default function AdminPanel() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/managers/search', {
+      const { data } = await api.post('/api/v1/managers/search', {
         keyword: managerSearchTerm,
         filters,
         sorts,
@@ -539,7 +539,7 @@ export default function AdminPanel() {
   const { data: unassignedDealersData } = useQuery({
     queryKey: ['unassigned-dealers'],
     queryFn: async () => {
-      const { data } = await api.get('/api/managers/unassigned-dealers');
+      const { data } = await api.get('/api/v1/managers/unassigned-dealers');
       return data.data;
     }
   });
@@ -584,7 +584,7 @@ export default function AdminPanel() {
   const dealerMutation = useMutation({
     mutationFn: (newData: any) => {
       const payload = { ...newData, managerId: selectedManagerId };
-      return editDealerId ? api.put(`/api/dealers/${editDealerId}`, payload) : api.post('/api/dealers', payload);
+      return editDealerId ? api.put(`/api/v1/dealers/${editDealerId}`, payload) : api.post('/api/v1/dealers', payload);
     },
     onSuccess: () => {
       toast.success(editDealerId ? 'Dealer updated successfully' : 'Dealer added successfully');
@@ -597,7 +597,7 @@ export default function AdminPanel() {
   });
 
   const deleteDealerMutation = useMutation({
-    mutationFn: (id: number) => api.delete(`/api/dealers/${id}`),
+    mutationFn: (id: number) => api.delete(`/api/v1/dealers/${id}`),
     onSuccess: () => {
       toast.success('Dealer deleted successfully');
       queryClient.invalidateQueries({ queryKey: ['dealers'] });
@@ -609,7 +609,7 @@ export default function AdminPanel() {
   const managerMutation = useMutation({
     mutationFn: (newData: any) => {
       const payload = { ...newData, dealerIds: selectedDealerIds };
-      return editManagerId ? api.put(`/api/managers/${editManagerId}`, payload) : api.post('/api/managers', payload);
+      return editManagerId ? api.put(`/api/v1/managers/${editManagerId}`, payload) : api.post('/api/v1/managers', payload);
     },
     onSuccess: () => {
       toast.success(editManagerId ? 'Manager updated successfully' : 'Manager added successfully');
@@ -624,7 +624,7 @@ export default function AdminPanel() {
   const deleteManagerMutation = useMutation({
     mutationFn: ({ id, reassignToManagerId }: { id: number; reassignToManagerId?: number }) => {
       const params = reassignToManagerId ? `?reassignToManagerId=${reassignToManagerId}` : '';
-      return api.delete(`/api/managers/${id}${params}`);
+      return api.delete(`/api/v1/managers/${id}${params}`);
     },
     onSuccess: () => {
       toast.success('Manager deleted successfully');
@@ -642,7 +642,7 @@ export default function AdminPanel() {
   // ─── Handlers ───────────────────────────────────────────────────────────────
   const handleDeleteManager = async (manager: any) => {
     try {
-      const { data } = await api.get(`/api/managers/${manager.id}/dealers`);
+      const { data } = await api.get(`/api/v1/managers/${manager.id}/dealers`);
       const dealers = data.data || [];
       if (dealers.length > 0) {
         setManagerToDelete(manager);
@@ -697,7 +697,7 @@ export default function AdminPanel() {
       managerForm.setValue('phone', item.phone || '');
       
       // Fetch dealers managed by this manager
-      api.get(`/api/managers/${item.id}/dealers`).then(({ data }) => {
+      api.get(`/api/v1/managers/${item.id}/dealers`).then(({ data }) => {
         const dealerIds = data.data.map((d: any) => d.id);
         setSelectedDealerIds(dealerIds);
       });

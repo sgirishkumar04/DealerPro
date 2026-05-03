@@ -15,7 +15,7 @@ export const partsService = {
    * Get all parts
    */
   getAll: async (params?: QueryParams): Promise<PaginatedResponse<Part>> => {
-    const response = await apiClient.get<any>('/api/parts', { 
+    const response = await apiClient.get<any>('/api/v1/parts', { 
       params: {
         page: params?.page ? params.page - 1 : 0,
         size: params?.limit || 10,
@@ -37,7 +37,7 @@ export const partsService = {
    * Get part by ID
    */
   getById: async (id: string): Promise<Part> => {
-    const response = await apiClient.get<Part>(`/api/parts/${id}`);
+    const response = await apiClient.get<Part>(`/api/v1/parts/${id}`);
     return response.data;
   },
 
@@ -45,7 +45,7 @@ export const partsService = {
    * Create new part
    */
   create: async (data: CreatePartDto): Promise<Part> => {
-    const response = await apiClient.post<Part>('/api/parts', data);
+    const response = await apiClient.post<Part>('/api/v1/parts', data);
     return response.data;
   },
 
@@ -53,7 +53,7 @@ export const partsService = {
    * Update existing part
    */
   update: async (id: string, data: Partial<CreatePartDto>): Promise<Part> => {
-    const response = await apiClient.put<Part>(`/api/parts/${id}`, data);
+    const response = await apiClient.put<Part>(`/api/v1/parts/${id}`, data);
     return response.data;
   },
 
@@ -61,7 +61,7 @@ export const partsService = {
    * Delete part
    */
   delete: async (id: string): Promise<void> => {
-    await apiClient.delete(`/api/parts/${id}`);
+    await apiClient.delete(`/api/v1/parts/${id}`);
   },
 
   /**

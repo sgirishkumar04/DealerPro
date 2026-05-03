@@ -49,7 +49,7 @@ export default function ResetPasswordPage() {
   const onSubmit = async (data: ResetForm) => {
     setIsLoading(true);
     try {
-      await api.post('/api/auth/reset-password', {
+      await api.post('/api/v1/auth/reset-password', {
         email,
         otp: data.otp,
         newPassword: data.newPassword
@@ -199,7 +199,7 @@ export default function ResetPasswordPage() {
                     component="span"
                     onClick={async () => {
                       try {
-                        await api.post('/api/auth/forgot-password', { email });
+                        await api.post('/api/v1/auth/forgot-password', { email });
                         toast.success('New OTP sent to your email!');
                       } catch (err: any) {
                         toast.error('Failed to resend OTP. Please try again.');

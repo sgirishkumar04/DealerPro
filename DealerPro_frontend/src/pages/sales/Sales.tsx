@@ -453,7 +453,7 @@ export default function Sales() {
         direction: s.direction.toUpperCase()
       }));
 
-      const { data } = await api.post('/api/orders/search', {
+      const { data } = await api.post('/api/v1/orders/search', {
         keyword,
         filters,
         sorts,
@@ -472,7 +472,7 @@ export default function Sales() {
   const { data: kiaCars = [] } = useQuery<KiaCar[]>({
     queryKey: ['kia-cars'],
     queryFn: async () => {
-      const { data } = await api.get('/api/kia-cars');
+      const { data } = await api.get('/api/v1/kia-cars');
       return data.data;
     },
     staleTime: Infinity,
@@ -490,7 +490,7 @@ export default function Sales() {
   const { data: dealersData } = useQuery({
     queryKey: ['dealers-list'],
     queryFn: async () => {
-      const { data } = await api.get('/api/dealers?page=0&size=10000');
+      const { data } = await api.get('/api/v1/dealers?page=0&size=10000');
       return data.data?.content || [];
     },
     enabled: needsDealerSelect,
@@ -511,7 +511,7 @@ export default function Sales() {
         ...(selectedKiaCar ? { vehicleId: selectedKiaCar.id } : {}),
         ...(needsDealerSelect && selectedDealerId ? { dealerId: selectedDealerId } : {}),
       };
-      return api.post('/api/orders', payload);
+      return api.post('/api/v1/orders', payload);
     },
     onSuccess: () => {
       toast.success('Order placed successfully!');
@@ -524,7 +524,7 @@ export default function Sales() {
 
   const statusMutation = useMutation({
     mutationFn: ({ id, status, version }: { id: number, status: string, version?: number }) => 
-      api.put(`/api/orders/${id}/status?status=${status}${version !== undefined ? `&version=${version}` : ''}`),
+      api.put(`/api/v1/orders/${id}/status?status=${status}${version !== undefined ? `&version=${version}` : ''}`),
     onSuccess: () => {
       toast.success('Order status updated successfully!');
       queryClient.invalidateQueries({ queryKey: ['orders'] });

@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import com.kia.dms.common.dto.request.GlobalSearchRequest;
 
 @RestController
-@RequestMapping("/api/leads")
+@RequestMapping("/api/v1/leads")
 @Tag(name = "Leads", description = "Lead Management APIs")
 @SecurityRequirement(name = "Bearer Authentication")
 public class LeadController {

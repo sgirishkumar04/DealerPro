@@ -11,7 +11,7 @@ import java.util.Base64;
 @Component
 public class EncryptionUtil {
 
-    private static String SECRET_KEY;
+    private static String SECRET_KEY = "DefaultKey123456";
 
     @Value("${app.security.encryption-key:DefaultKey123456}")
     public void setSecretKey(String key) {

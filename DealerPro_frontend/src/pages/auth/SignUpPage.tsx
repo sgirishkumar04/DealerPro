@@ -71,7 +71,7 @@ export default function SignUpPage() {
   const { data: managersData } = useQuery({
     queryKey: ['managers-signup'],
     queryFn: async () => {
-      const { data } = await api.get('/api/managers?page=0&size=100');
+      const { data } = await api.get('/api/v1/managers?page=0&size=100');
       return data.data;
     },
     enabled: selectedRole === 'ROLE_DEALER',
@@ -83,7 +83,7 @@ export default function SignUpPage() {
   const { data: dealersData } = useQuery({
     queryKey: ['dealers-signup'],
     queryFn: async () => {
-      const { data } = await api.get('/api/dealers?page=0&size=100');
+      const { data } = await api.get('/api/v1/dealers?page=0&size=100');
       return data.data;
     },
     enabled: selectedRole === 'ROLE_MANAGER',
@@ -111,7 +111,7 @@ export default function SignUpPage() {
         payload.dealerIds = data.dealerIds;
       }
 
-      await api.post('/api/auth/signup', payload);
+      await api.post('/api/v1/auth/signup', payload);
       toast.success('Account created successfully!');
       navigate('/login');
     } catch (err: any) {

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import com.kia.dms.common.dto.request.GlobalSearchRequest;
 
 @RestController
-@RequestMapping("/api/service-orders")
+@RequestMapping("/api/v1/service-orders")
 @Tag(name = "Service Orders", description = "Service Order Management APIs")
 @SecurityRequirement(name = "Bearer Authentication")
 public class ServiceOrderController {
