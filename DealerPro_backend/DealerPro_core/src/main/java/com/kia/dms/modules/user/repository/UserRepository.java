@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long>, JpaSpecificationExecutor<UserEntity> {
     
-    @Query("SELECT u FROM UserEntity u JOIN FETCH u.roles WHERE u.email = :email AND u.isDeleted = false")
+    @Query("SELECT u FROM UserEntity u JOIN FETCH u.role WHERE u.email = :email AND u.isDeleted = false")
     Optional<UserEntity> findByEmailWithRole(@Param("email") String email);
 
     @Query("SELECT u FROM UserEntity u WHERE u.email = :email AND u.isDeleted = false")

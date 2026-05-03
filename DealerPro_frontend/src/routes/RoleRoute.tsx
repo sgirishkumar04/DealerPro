@@ -9,11 +9,7 @@ interface RoleRouteProps {
 export default function RoleRoute({ allowedRoles }: RoleRouteProps) {
   const user = useAuthStore((state) => state.user);
 
-  const hasAccess = user?.roles.some(role => 
-    allowedRoles.includes(role) || allowedRoles.includes(role.replace('ROLE_', ''))
-  );
-
-  if (!user || !hasAccess) {
+  if (!user || (!allowedRoles.includes(user.role) && !allowedRoles.includes('ROLE_' + user.role))) {
     return <AccessDenied />;
   }
 

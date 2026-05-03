@@ -173,7 +173,7 @@ public class DataSeeder implements CommandLineRunner {
                 mu.setLastName(mNameParts.length > 1 ? mNameParts[1] : "");
                 mu.setEmail("manager" + (i + 1) + "@kia.com");
                 mu.setPassword(passwordEncoder.encode("manager123"));
-                mu.getRoles().add(managerRole);
+                mu.setRole(managerRole);
                 mu.setIsActive(true);
                 userRepository.save(mu);
 
@@ -198,7 +198,7 @@ public class DataSeeder implements CommandLineRunner {
                 au.setLastName(aNameParts.length > 1 ? aNameParts[1] : "");
                 au.setEmail("admin" + (i + 1) + "@kia.com");
                 au.setPassword(passwordEncoder.encode("admin123"));
-                au.getRoles().add(adminRole);
+                au.setRole(adminRole);
                 au.setIsActive(true);
                 userRepository.save(au);
 
@@ -236,7 +236,7 @@ public class DataSeeder implements CommandLineRunner {
                     du.setLastName("User " + (i + 1));
                     du.setEmail(email);
                     du.setPassword(passwordEncoder.encode("dealer123"));
-                    du.getRoles().add(dealerRole);
+                    du.setRole(dealerRole);
                     du.setDealer(dealers.get(i));
                     du.setIsActive(true);
                     userRepository.save(du);

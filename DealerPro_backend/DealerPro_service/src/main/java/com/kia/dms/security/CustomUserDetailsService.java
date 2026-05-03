@@ -12,8 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -26,15 +25,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity user = userRepository.findByEmailWithRole(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> {
-                    String roleName = role.getName();
-                    if (!roleName.startsWith("ROLE_")) {
-                        roleName = "ROLE_" + roleName;
-                    }
-                    return new SimpleGrantedAuthority(roleName);
-                })
-                .collect(Collectors.toList());
+        // Ensure the role has the "ROLE_" prefix expected by Spring Security's hasRole() checks
+        String roleName = user.getRole().getName();
+        if (!roleName.startsWith("ROLE_")) {
+            roleName = "ROLE_" + roleName;
+        }
+        GrantedAuthority authority = new SimpleGrantedAuthority(roleName);
         
         return new User(
                 user.getEmail(), 
@@ -43,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true, // accountNonExpired
                 true, // credentialsNonExpired
                 true, // accountNonLocked
-                authorities
+                Collections.singletonList(authority)
         );
     }
 }

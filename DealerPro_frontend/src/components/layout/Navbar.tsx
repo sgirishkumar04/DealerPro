@@ -6,11 +6,9 @@ export default function Navbar() {
   const { user } = useAuth();
 
   // Format role: title-case (e.g. "DEALER" → "Dealer")
-  const formattedRole = user?.roles?.length
-    ? user.roles.map(r => {
-        const name = r.replace("ROLE_", "");
-        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-      }).join(", ")
+  const formattedRole = user?.role
+    ? user.role.replace("ROLE_", "").charAt(0).toUpperCase() +
+      user.role.replace("ROLE_", "").slice(1).toLowerCase()
     : "";
 
   // Full display name

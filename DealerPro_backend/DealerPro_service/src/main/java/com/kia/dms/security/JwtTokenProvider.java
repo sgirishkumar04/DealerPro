@@ -5,13 +5,11 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
@@ -36,10 +34,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
-                .claim("roles", userPrincipal.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList()))
-                .setId(java.util.UUID.randomUUID().toString())
+                .setId(java.util.UUID.randomUUID().toString()) // Added JTI for blacklisting
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(jwtSecret)

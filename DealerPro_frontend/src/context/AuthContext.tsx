@@ -10,7 +10,6 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
-  roles: Role[];
   role: Role | null;
   login: (credentials: LoginCredentials) => Promise<void>;
   logout: () => void;
@@ -56,8 +55,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       firstName: response.firstName || response.name.split(' ')[0],
       lastName: response.lastName || response.name.split(' ').slice(1).join(' '),
       email: response.email,
-      roles: response.roles,
-      role: response.roles[0],
+      role: response.role,
       isActive: true
     };
     
@@ -74,7 +72,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       id: userObj.id,
       name: userObj.name,
       email: userObj.email,
-      roles: userObj.roles,
       role: userObj.role,
       token: response.token
     });
@@ -90,7 +87,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const hasPermission = (permission: Permission): boolean => {
     if (!user) return false;
-    return user.roles.some(r => checkPermission(r, permission));
+    return checkPermission(user.role, permission);
   };
 
   return (
@@ -99,7 +96,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         user,
         token,
         isAuthenticated: !!token && !!user,
-        roles: user?.roles || [],
         role: user?.role || null,
         login,
         logout,
