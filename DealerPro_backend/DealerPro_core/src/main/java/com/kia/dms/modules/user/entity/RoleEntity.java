@@ -13,6 +13,9 @@ public class RoleEntity extends BaseEntity {
     @Column(length = 255)
     private String description;
 
+    @ManyToMany(mappedBy = "roles")
+    private java.util.Set<UserEntity> users = new java.util.HashSet<>();
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getDescription() { return description; }

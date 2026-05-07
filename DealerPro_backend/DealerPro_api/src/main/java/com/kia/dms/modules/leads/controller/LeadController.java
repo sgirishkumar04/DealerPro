@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,14 @@ public class LeadController {
         )
     })
     public ResponseEntity<ApiResponse<PaginationResponse<LeadResponse>>> getLeads(
-            @Parameter(description = "Pagination parameters") Pageable pageable) {
+            @ParameterObject Pageable pageable) {
         return ResponseEntity.ok(new ApiResponse<>(true, leadService.getLeads(pageable), "Leads retrieved successfully"));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get lead by ID", description = "Retrieve details of a single lead by its ID")
+    public ResponseEntity<ApiResponse<LeadResponse>> getLeadById(@PathVariable Long id) {
+        return ResponseEntity.ok(new ApiResponse<>(true, leadService.getLeadById(id), "Lead retrieved successfully"));
     }
 
     @PostMapping("/search")

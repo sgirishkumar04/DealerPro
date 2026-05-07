@@ -5,10 +5,13 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
   const { user } = useAuth();
 
-  // Format role: title-case (e.g. "DEALER" → "Dealer")
-  const formattedRole = user?.role
-    ? user.role.replace("ROLE_", "").charAt(0).toUpperCase() +
-      user.role.replace("ROLE_", "").slice(1).toLowerCase()
+  // Format roles: title-case and joined (e.g. ["ROLE_DEALER", "ROLE_MANAGER"] → "Dealer, Manager")
+  const rolesArray = user?.roles || [];
+  const formattedRole = rolesArray.length > 0
+    ? rolesArray.map(r => 
+        r.replace("ROLE_", "").charAt(0).toUpperCase() + 
+        r.replace("ROLE_", "").slice(1).toLowerCase()
+      ).join(", ")
     : "";
 
   // Full display name

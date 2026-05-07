@@ -27,7 +27,9 @@ api.interceptors.response.use(
     const isLoginPage = window.location.pathname === '/login';
     const isSignupPage = window.location.pathname === '/signup';
 
-    if (error.response?.status === 401 && !isLoginRequest && !isSignupRequest && !isLoginPage && !isSignupPage) {
+    const isExpiredError = error.response?.data?.message?.toLowerCase().includes('expired');
+
+    if (error.response?.status === 401 && !isLoginRequest && !isSignupRequest && !isLoginPage && !isSignupPage && !isExpiredError) {
       useAuthStore.getState().logout();
       window.location.href = '/login';
     }

@@ -38,6 +38,7 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
+    mode: 'onChange',
   });
 
   // Countdown timer for account lock

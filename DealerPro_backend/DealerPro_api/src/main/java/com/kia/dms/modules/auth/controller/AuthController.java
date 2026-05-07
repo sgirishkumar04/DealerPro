@@ -94,10 +94,12 @@ public class AuthController {
         return ResponseEntity.ok(new ApiResponse<>(true, "OTP sent to your email", "Request successful"));
     }
 
-    @PostMapping("/reset-password")
-    @Operation(summary = "Reset password", description = "Reset user's password using OTP")
-    public ResponseEntity<ApiResponse<String>> resetPassword(@Validated @RequestBody ResetPasswordRequest request) {
-        authService.resetPassword(request);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Password reset successfully", "Reset successful"));
+    @GetMapping("/me")
+    @Operation(summary = "Get current user profile", description = "Fetch profile of the authenticated user")
+    public ResponseEntity<ApiResponse<AuthResponse>> getCurrentUser(@RequestHeader("Authorization") String token) {
+        String jwt = token.substring(7);
+        String email = tokenProvider.getUsernameFromJWT(jwt);
+        AuthResponse response = authService.getProfile(email);
+        return ResponseEntity.ok(new ApiResponse<>(true, response, "Profile fetched successfully"));
     }
 }

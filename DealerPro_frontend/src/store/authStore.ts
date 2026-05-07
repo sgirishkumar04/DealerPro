@@ -4,8 +4,9 @@ interface User {
   id: string;
   name: string;
   email: string;
-  role: string;
+  roles: string[];
   token: string;
+  accountExpiresAt?: string | null;
 }
 
 interface AuthState {

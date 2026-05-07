@@ -104,7 +104,7 @@ class AuthServiceTest {
         assertNotNull(response);
         assertEquals("mock.jwt.token", response.getToken());
         assertEquals("dealer@kia.com", response.getEmail());
-        assertEquals("ROLE_DEALER", response.getRole());
+        assertTrue(response.getRoles().contains("ROLE_DEALER"));
         verify(loginAttemptService).checkAccountLock("dealer@kia.com");
         verify(loginAttemptService).loginSucceeded("dealer@kia.com");
     }

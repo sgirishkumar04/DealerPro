@@ -60,8 +60,17 @@ export default function Sidebar() {
   }, [navigate]);
 
   if (!user) return null;
+  console.log('Sidebar Debug - User Roles:', user.roles);
 
-  const role = user.role.replace('ROLE_', '');
+  const roles = (user?.roles || []);
+  const hasRole = (r: string) => {
+    return roles.some(role => 
+      role === r || 
+      role === `ROLE_${r}` || 
+      role.replace('ROLE_', '') === r
+    );
+  };
+  const hasAnyRole = (rs: string[]) => rs.some(r => hasRole(r));
 
   const navItems = [
     { to: '/dashboard', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
@@ -72,13 +81,13 @@ export default function Sidebar() {
     { to: '/service', icon: <Wrench size={20} />, label: 'Service' },
     { to: '/parts', icon: <PackageSearch size={20} />, label: 'Parts' },
     { to: '/audit-logs', icon: <FileText size={20} />, label: 'Audit Logs' },
-    ...(['ADMIN', 'MANAGER'].includes(role)
+    ...(hasAnyRole(['ADMIN', 'MANAGER'])
       ? [{ to: '/finance', icon: <IndianRupee size={20} />, label: 'Finance' }]
       : []),
-    ...(['ADMIN', 'MANAGER'].includes(role)
+    ...(hasAnyRole(['ADMIN', 'MANAGER'])
       ? [{ to: '/analytics', icon: <BarChart3 size={20} />, label: 'Analytics' }]
       : []),
-    ...(role === 'ADMIN'
+    ...(hasRole('ADMIN')
       ? [{ to: '/admin', icon: <ShieldAlert size={20} />, label: 'Admin Panel' }]
       : []),
   ];
@@ -143,7 +152,6 @@ export default function Sidebar() {
         boxShadow: isMobile ? '4px 0 32px rgba(0,0,0,0.5)' : 'none',
       }}
     >
-      {/* Logo area */}
       <div
         style={{
           padding: collapsed && !isMobile ? '20px 0' : '20px 16px',

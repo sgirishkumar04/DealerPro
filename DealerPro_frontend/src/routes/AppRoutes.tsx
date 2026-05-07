@@ -19,7 +19,7 @@ import RoleRoute from './RoleRoute';
 
 import Analytics from '../pages/analytics/Analytics';
 import Dashboard from '../pages/dashboard/Dashboard';
-import AdminPanel from '../pages/admin/AdminPanel';
+import UserManagement from '../pages/admin/UserManagement';
 
 export default function AppRoutes() {
   return (
@@ -51,7 +51,7 @@ export default function AppRoutes() {
           </Route>
 
           <Route element={<RoleRoute allowedRoles={['ADMIN', 'ROLE_ADMIN']} />}>
-            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/admin" element={<UserManagement />} />
           </Route>
         </Route>
       </Route>

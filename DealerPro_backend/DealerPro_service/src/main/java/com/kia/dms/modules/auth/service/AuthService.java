@@ -15,4 +15,5 @@ public interface AuthService {
     void resendOtp(String email);
     void forgotPassword(ForgotPasswordRequest request);
     void resetPassword(ResetPasswordRequest request);
+    AuthResponse getProfile(String email);
 }

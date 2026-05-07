@@ -29,6 +29,12 @@ public class LoginAttemptService {
     public void checkAccountLock(String email) {
         try {
             userRepository.findByEmail(email).ifPresent(user -> {
+                // Check for explicit expiry
+                if (user.getAccountExpiresAt() != null && java.time.LocalDateTime.now().isAfter(user.getAccountExpiresAt())) {
+                    logger.warn("Login attempt for expired account: {}", email);
+                    throw new AccountLockedException(user.getAccountExpiresAt(), "Account has expired. Please contact Admin.");
+                }
+
                 if (isAccountLocked(user)) {
                     logger.warn("Login attempt for locked account: {}", email);
                     throw new AccountLockedException(user.getAccountLockedUntil());

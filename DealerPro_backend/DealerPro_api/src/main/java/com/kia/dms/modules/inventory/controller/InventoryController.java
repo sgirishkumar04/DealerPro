@@ -6,6 +6,7 @@ import com.kia.dms.modules.inventory.dto.request.InventoryRequest;
 import com.kia.dms.modules.inventory.dto.response.InventoryResponse;
 import com.kia.dms.modules.inventory.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +32,7 @@ public class InventoryController {
             @RequestParam(required = false) String model,
             @RequestParam(required = false) String variant,
             @RequestParam(required = false) String color,
-            Pageable pageable) {
+            @ParameterObject Pageable pageable) {
         return ResponseEntity.ok(new ApiResponse<>(true, inventoryService.getInventory(vehicleId, dealerId, status, model, variant, color, pageable), "Success"));
     }
 

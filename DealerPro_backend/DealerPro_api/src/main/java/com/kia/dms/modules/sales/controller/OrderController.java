@@ -6,6 +6,7 @@ import com.kia.dms.modules.sales.dto.request.OrderRequest;
 import com.kia.dms.modules.sales.dto.response.OrderResponse;
 import com.kia.dms.modules.sales.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +25,7 @@ public class OrderController {
             @RequestParam(required = false) Long orderId,
             @RequestParam(required = false) Long dealerId,
             @RequestParam(required = false) Long managerId,
-            Pageable pageable) {
+            @ParameterObject Pageable pageable) {
         return ResponseEntity.ok(new ApiResponse<>(true, orderService.getOrders(orderId, dealerId, managerId, pageable), "Success"));
     }
 

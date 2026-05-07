@@ -82,18 +82,28 @@ public class AuthServiceImpl implements AuthService {
             String jwt = tokenProvider.generateToken(authentication);
 
             UserEntity authenticatedUser = getUserWithRoleFromCache(request.getEmail());
-
-            // Reset failed login attempts on successful login
+            
+            // Force fetch roles using native query if JPA fails us
+            java.util.List<String> roles;
             try {
-                loginAttemptService.loginSucceeded(email);
+                roles = roleRepository.findAllRoleNamesByUserId(authenticatedUser.getId());
+                System.out.println("DEBUG: Native SQL roles for " + authenticatedUser.getEmail() + ": " + roles);
             } catch (Exception e) {
-                // Log but don't block login if reset fails
-                System.err.println("Failed to reset login attempts: " + e.getMessage());
+                System.err.println("DEBUG: roleRepository fetch failed, trying entity roles: " + e.getMessage());
+                roles = authenticatedUser.getRoles().stream()
+                        .map(com.kia.dms.modules.user.entity.RoleEntity::getName)
+                        .collect(java.util.stream.Collectors.toList());
             }
 
-            return new AuthResponse(jwt, authenticatedUser.getId(), authenticatedUser.getRole().getName(), 
+            if (roles.isEmpty()) {
+                System.out.println("DEBUG CRITICAL: Roles still empty for user ID: " + authenticatedUser.getId());
+            }
+
+            System.out.println("DEBUG: Final AuthResponse Roles: " + roles);
+
+            return new AuthResponse(jwt, authenticatedUser.getId(), roles, 
                     authenticatedUser.getName(), authenticatedUser.getFirstName(), authenticatedUser.getLastName(), 
-                    authenticatedUser.getEmail());
+                    authenticatedUser.getEmail(), authenticatedUser.getAccountExpiresAt());
         } catch (org.springframework.security.authentication.LockedException e) {
             throw new BadCredentialsException("Your account is currently locked. Please try again later.");
         } catch (BadCredentialsException e) {
@@ -161,7 +171,7 @@ public class AuthServiceImpl implements AuthService {
         }
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(role);
+        user.getRoles().add(role);
         user.setIsEmailVerified(true);
 
         // First save user to get the ID
@@ -227,7 +237,11 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
 
-        return new AuthResponse(jwt, user.getId(), role.getName(), user.getName(), user.getFirstName(), user.getLastName(), user.getEmail());
+        java.util.List<String> roles = user.getRoles().stream()
+                .map(com.kia.dms.modules.user.entity.RoleEntity::getName)
+                .collect(java.util.stream.Collectors.toList());
+
+        return new AuthResponse(jwt, user.getId(), roles, user.getName(), user.getFirstName(), user.getLastName(), user.getEmail());
     }
 
     @Override
@@ -319,5 +333,23 @@ public class AuthServiceImpl implements AuthService {
     public UserEntity getUserWithRoleFromCache(String email) {
         return userRepository.findByEmailWithRole(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    @Override
+    public AuthResponse getProfile(String email) {
+        UserEntity user = getUserWithRoleFromCache(email);
+        
+        java.util.List<String> roles;
+        try {
+            roles = roleRepository.findAllRoleNamesByUserId(user.getId());
+        } catch (Exception e) {
+            roles = user.getRoles().stream()
+                    .map(com.kia.dms.modules.user.entity.RoleEntity::getName)
+                    .collect(java.util.stream.Collectors.toList());
+        }
+
+        return new AuthResponse(null, user.getId(), roles, 
+                user.getName(), user.getFirstName(), user.getLastName(), 
+                user.getEmail(), user.getAccountExpiresAt());
     }
 }

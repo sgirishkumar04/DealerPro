@@ -48,6 +48,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 String username = tokenProvider.getUsernameFromJWT(jwt);
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                
+                // Check if account is expired or disabled in real-time
+                if (!userDetails.isAccountNonExpired() || !userDetails.isEnabled()) {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"success\": false, \"message\": \"Account has expired or is deactivated. Please contact Admin.\"}");
+                    return;
+                }
+
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

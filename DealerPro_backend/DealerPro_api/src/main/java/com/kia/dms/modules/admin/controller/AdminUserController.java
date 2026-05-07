@@ -52,9 +52,10 @@ public class AdminUserController {
                 dto.put("id", u.getId());
                 dto.put("name", u.getName());
                 dto.put("email", u.getEmail());
-                dto.put("role", u.getRole() != null ? u.getRole().getName() : null);
+                dto.put("roles", u.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toList()));
                 dto.put("dealerId", u.getDealer() != null ? u.getDealer().getId() : null);
                 dto.put("isActive", u.getIsActive() != null ? u.getIsActive() : true);
+                dto.put("accountExpiresAt", u.getAccountExpiresAt());
                 return dto;
             })
             .collect(Collectors.toList());
@@ -63,6 +64,28 @@ public class AdminUserController {
                 content, page.getNumber(), page.getSize(),
                 page.getTotalElements(), page.getTotalPages());
         return new ApiResponse<>(true, res, "Users fetched successfully");
+    }
+
+    @PutMapping("/{id}/roles")
+    public ApiResponse<Map<String, Object>> updateUserRoles(@PathVariable Long id, @RequestBody List<String> roleNames) {
+        UserEntity user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        user.getRoles().clear();
+        for (String name : roleNames) {
+            final String roleName = name.startsWith("ROLE_") ? name : "ROLE_" + name;
+            RoleEntity role = roleRepository.findByName(roleName)
+                .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
+            user.getRoles().add(role);
+        }
+        
+        UserEntity saved = userRepository.save(user);
+        
+        Map<String, Object> dto = new HashMap<>();
+        dto.put("id", saved.getId());
+        dto.put("roles", saved.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toList()));
+        
+        return new ApiResponse<>(true, dto, "Roles updated successfully");
     }
 
     @PostMapping
@@ -184,9 +207,10 @@ public class AdminUserController {
                 dto.put("id", u.getId());
                 dto.put("name", u.getName());
                 dto.put("email", u.getEmail());
-                dto.put("role", u.getRole() != null ? u.getRole().getName() : null);
+                dto.put("roles", u.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toList()));
                 dto.put("dealerId", u.getDealer() != null ? u.getDealer().getId() : null);
                 dto.put("isActive", u.getIsActive() != null ? u.getIsActive() : true);
+                dto.put("accountExpiresAt", u.getAccountExpiresAt());
                 return dto;
             })
             .collect(Collectors.toList());
@@ -195,5 +219,25 @@ public class AdminUserController {
                 content, page.getNumber(), page.getSize(),
                 page.getTotalElements(), page.getTotalPages());
         return new ApiResponse<>(true, res, "Users searched successfully");
+    }
+
+    @PutMapping("/{id}/expiry")
+    public ApiResponse<Map<String, Object>> updateAccountExpiry(@PathVariable Long id, @RequestBody Map<String, String> request) {
+        UserEntity user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        String expiryStr = request.get("expiryDate");
+        if (expiryStr != null && !expiryStr.isEmpty()) {
+            user.setAccountExpiresAt(java.time.LocalDateTime.parse(expiryStr));
+        } else {
+            user.setAccountExpiresAt(null);
+        }
+        
+        UserEntity saved = userRepository.save(user);
+        Map<String, Object> dto = new HashMap<>();
+        dto.put("id", saved.getId());
+        dto.put("accountExpiresAt", saved.getAccountExpiresAt());
+        
+        return new ApiResponse<>(true, dto, "Account expiry updated successfully");
     }
 }

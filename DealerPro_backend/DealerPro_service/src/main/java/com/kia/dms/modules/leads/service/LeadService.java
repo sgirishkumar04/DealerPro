@@ -21,4 +21,5 @@ public interface LeadService {
     LeadResponse updateLead(Long id, LeadEntity lead);
     LeadResponse updateLeadWithFile(Long id, LeadEntity lead, java.util.List<org.springframework.web.multipart.MultipartFile> files);
     void deleteLead(Long id);
+    LeadResponse getLeadById(Long id);
 }

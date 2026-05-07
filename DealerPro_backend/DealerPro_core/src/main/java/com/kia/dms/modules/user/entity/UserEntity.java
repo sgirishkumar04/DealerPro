@@ -23,9 +23,13 @@ public class UserEntity extends BaseEntity {
     @Column(length = 255, nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-    private RoleEntity role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private java.util.Set<RoleEntity> roles = new java.util.HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dealer_id")
@@ -50,6 +54,9 @@ public class UserEntity extends BaseEntity {
     @Column(name = "last_failed_login", nullable = true)
     private java.time.LocalDateTime lastFailedLogin;
 
+    @Column(name = "account_expires_at", nullable = true)
+    private java.time.LocalDateTime accountExpiresAt;
+
     @Column(name = "is_email_verified")
     private Boolean isEmailVerified = true;
 
@@ -70,8 +77,25 @@ public class UserEntity extends BaseEntity {
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public RoleEntity getRole() { return role; }
-    public void setRole(RoleEntity role) { this.role = role; }
+    public java.util.Set<RoleEntity> getRoles() { return roles; }
+    public void setRoles(java.util.Set<RoleEntity> roles) { this.roles = roles; }
+
+    // Backward compatibility methods for single role logic
+    @Transient
+    public RoleEntity getRole() {
+        if (roles == null || roles.isEmpty()) return null;
+        return roles.iterator().next();
+    }
+
+    public void setRole(RoleEntity role) {
+        if (this.roles == null) {
+            this.roles = new java.util.HashSet<>();
+        }
+        this.roles.clear();
+        if (role != null) {
+            this.roles.add(role);
+        }
+    }
     public DealerEntity getDealer() { return dealer; }
     public void setDealer(DealerEntity dealer) { this.dealer = dealer; }
     public ManagerEntity getManagerProfile() { return managerProfile; }
@@ -92,6 +116,8 @@ public class UserEntity extends BaseEntity {
     public void setOtpCode(String otpCode) { this.otpCode = otpCode; }
     public java.time.LocalDateTime getOtpExpiry() { return otpExpiry; }
     public void setOtpExpiry(java.time.LocalDateTime otpExpiry) { this.otpExpiry = otpExpiry; }
+    public java.time.LocalDateTime getAccountExpiresAt() { return accountExpiresAt; }
+    public void setAccountExpiresAt(java.time.LocalDateTime accountExpiresAt) { this.accountExpiresAt = accountExpiresAt; }
 
     @Transient
     public String getFullName() {

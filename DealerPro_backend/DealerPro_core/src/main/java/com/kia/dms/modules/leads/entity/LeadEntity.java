@@ -6,7 +6,11 @@ import com.kia.dms.common.specification.EncryptionConverter;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "leads")
+@Table(name = "leads", indexes = {
+    @Index(name = "idx_lead_status", columnList = "status"),
+    @Index(name = "idx_lead_dealer", columnList = "dealer_id"),
+    @Index(name = "idx_lead_deleted", columnList = "is_deleted")
+})
 public class LeadEntity extends BaseEntity {
 
     @Column(name = "first_name", length = 50)

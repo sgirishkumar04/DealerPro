@@ -418,8 +418,10 @@ function ToolbarDrawer({ open, onClose, columns, filters, sorts, onFiltersChange
 // ─── Main Leads Component ─────────────────────────────────────────────────────
 export default function Leads() {
   const { user } = useAuthStore();
-  const isManagerOrAdmin = user?.role === 'MANAGER' || user?.role === 'ADMIN' || user?.role === 'ROLE_MANAGER' || user?.role === 'ROLE_ADMIN';
-  const isAdmin = user?.role === 'ADMIN' || user?.role === 'ROLE_ADMIN';
+  const roles = user?.roles?.map(r => r.replace('ROLE_', '')) || [];
+  const isManagerOrAdmin = roles.some(r => ['MANAGER', 'ADMIN'].includes(r));
+  const isAdmin = roles.includes('ADMIN');
+  const isDealer = roles.includes('DEALER');
   const queryClient = useQueryClient();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
@@ -739,7 +741,7 @@ export default function Leads() {
               <FileText size={18} />
             </IconButton>
           </Tooltip>
-          {(user?.role === 'DEALER' || user?.role === 'ROLE_DEALER' || user?.role === 'ADMIN' || user?.role === 'ROLE_ADMIN') && (
+          {(isDealer || isAdmin) && (
             <IconButton size="small" color="primary" onClick={() => handleOpenForm(params.row)}>
               <Edit size={18} />
             </IconButton>

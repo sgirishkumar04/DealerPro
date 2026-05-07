@@ -13,6 +13,12 @@ public class AccountLockedException extends RuntimeException {
         this.lockedUntil = lockedUntil;
         this.remainingMinutes = ChronoUnit.MINUTES.between(LocalDateTime.now(), lockedUntil);
     }
+
+    public AccountLockedException(LocalDateTime lockedUntil, String message) {
+        super(message);
+        this.lockedUntil = lockedUntil;
+        this.remainingMinutes = 0;
+    }
     
     private static String buildMessage(LocalDateTime lockedUntil) {
         long minutes = ChronoUnit.MINUTES.between(LocalDateTime.now(), lockedUntil);

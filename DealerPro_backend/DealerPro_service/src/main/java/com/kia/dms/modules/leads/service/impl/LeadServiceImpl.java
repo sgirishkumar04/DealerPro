@@ -413,7 +413,7 @@ public class LeadServiceImpl implements LeadService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     @CacheEvict(value = {"leads", "analytics"}, allEntries = true)
     public void deleteLead(Long id) {
         LeadEntity existingLead = leadRepository.findById(id)
@@ -421,6 +421,14 @@ public class LeadServiceImpl implements LeadService {
         // Soft delete
         existingLead.setIsDeleted(true);
         leadRepository.save(existingLead);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public LeadResponse getLeadById(Long id) {
+        LeadEntity lead = leadRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Lead not found"));
+        return mapToLeadResponse(lead);
     }
 
     private TestDriveResponse mapToTestDriveResponse(TestDriveEntity entity) {

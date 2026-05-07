@@ -6,6 +6,7 @@ import com.kia.dms.modules.vehicle.dto.request.VehicleRequest;
 import com.kia.dms.modules.vehicle.dto.response.VehicleResponse;
 import com.kia.dms.modules.vehicle.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +21,7 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<PaginationResponse<VehicleResponse>>> getAllVehicles(Pageable pageable) {
+    public ResponseEntity<ApiResponse<PaginationResponse<VehicleResponse>>> getAllVehicles(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok(new ApiResponse<>(true, vehicleService.getAllVehicles(pageable), "Success"));
     }
 
